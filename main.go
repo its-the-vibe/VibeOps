@@ -12,10 +12,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	buildDir string
-)
-
 func main() {
 	rootCmd := &cobra.Command{
 		Use:   "vibeops",
@@ -29,6 +25,8 @@ func main() {
 		Short: "Process template files and generate configuration files",
 		Long:  `Process all .tmpl files in the source folder and generate output files in the build folder.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			buildDir, _ := cmd.Flags().GetString("build-dir")
+			
 			// Load values from values.json
 			values, err := loadValues("values.json")
 			if err != nil {
@@ -51,6 +49,8 @@ func main() {
 		Short: "Create symlinks from build directory to BaseDir",
 		Long:  `Walk through the build directory and create symlinks to the BaseDir specified in values.json.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			buildDir, _ := cmd.Flags().GetString("build-dir")
+			
 			// Load values from values.json
 			values, err := loadValues("values.json")
 			if err != nil {
@@ -68,8 +68,8 @@ func main() {
 	}
 
 	// Add --build-dir flag to both commands
-	templateCmd.Flags().StringVarP(&buildDir, "build-dir", "b", "build", "Output build directory")
-	linkCmd.Flags().StringVarP(&buildDir, "build-dir", "b", "build", "Build directory to create symlinks from")
+	templateCmd.Flags().StringP("build-dir", "b", "build", "Output build directory")
+	linkCmd.Flags().StringP("build-dir", "b", "build", "Build directory to create symlinks from")
 
 	// Add commands to root
 	rootCmd.AddCommand(templateCmd)
