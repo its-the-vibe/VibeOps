@@ -25,6 +25,7 @@ func main() {
 		Short: "Process template files and generate configuration files",
 		Long:  `Process all .tmpl files in the source folder and generate output files in the build folder.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			// GetString error can be safely ignored as the flag is defined below
 			buildDir, _ := cmd.Flags().GetString("build-dir")
 			
 			// Load values from values.json
@@ -49,6 +50,7 @@ func main() {
 		Short: "Create symlinks from build directory to BaseDir",
 		Long:  `Walk through the build directory and create symlinks to the BaseDir specified in values.json.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			// GetString error can be safely ignored as the flag is defined below
 			buildDir, _ := cmd.Flags().GetString("build-dir")
 			
 			// Load values from values.json
