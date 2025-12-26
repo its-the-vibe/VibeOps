@@ -36,11 +36,43 @@ To process all template files and generate configuration files:
 make template
 ```
 
+Or use the CLI directly:
+
+```bash
+./vibeops template
+```
+
 This command will:
 1. Build the templating program
 2. Read values from `values.json`
 3. Process all `.tmpl` files in the `source` folder
 4. Generate output files in the `build` folder (without the `.tmpl` extension)
+
+You can specify a custom build directory:
+
+```bash
+./vibeops template --build-dir /path/to/custom/build
+```
+
+### Creating Symlinks
+
+To create symlinks from the build directory to the `BaseDir` specified in `values.json`:
+
+```bash
+make link
+```
+
+Or use the CLI directly:
+
+```bash
+./vibeops link
+```
+
+You can specify a custom build directory:
+
+```bash
+./vibeops link --build-dir /path/to/custom/build
+```
 
 ### Other Commands
 
@@ -52,6 +84,11 @@ make build
 Clean up generated files:
 ```bash
 make clean
+```
+
+View all available commands:
+```bash
+./vibeops --help
 ```
 
 ## Directory Structure
