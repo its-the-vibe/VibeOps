@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/fs"
 	"os"
@@ -11,11 +12,25 @@ import (
 )
 
 func main() {
+	// Parse command line flags
+	linkMode := flag.Bool("link", false, "Create symlinks from build directory to BaseDir")
+	flag.Parse()
+
 	// Load values from values.json
 	values, err := loadValues("values.json")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error loading values.json: %v\n", err)
 		os.Exit(1)
+	}
+
+	// Handle link mode
+	if *linkMode {
+		if err := createSymlinks("build", values); err != nil {
+			fmt.Fprintf(os.Stderr, "Error creating symlinks: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Println("Symlinks created successfully!")
+		return
 	}
 
 	// Process templates
@@ -127,4 +142,66 @@ func processTemplateFile(srcPath, buildDir, relPath string, values map[string]in
 	}
 
 	return nil
+}
+
+// createSymlinks walks through the build directory and creates symlinks to BaseDir
+func createSymlinks(buildDir string, values map[string]interface{}) error {
+	// Get BaseDir from values
+	baseDir, ok := values["BaseDir"].(string)
+	if !ok {
+		return fmt.Errorf("BaseDir not found in values.json or is not a string")
+	}
+
+	// Check if build directory exists
+	if _, err := os.Stat(buildDir); os.IsNotExist(err) {
+		return fmt.Errorf("build directory does not exist: %s", buildDir)
+	}
+
+	// Walk through the build directory
+	return filepath.WalkDir(buildDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// Skip directories
+		if d.IsDir() {
+			return nil
+		}
+
+		// Calculate relative path from build directory
+		relPath, err := filepath.Rel(buildDir, path)
+		if err != nil {
+			return fmt.Errorf("failed to get relative path: %w", err)
+		}
+
+		// Construct target path in BaseDir
+		targetPath := filepath.Join(baseDir, relPath)
+
+		// Create parent directories in target if needed
+		targetDir := filepath.Dir(targetPath)
+		if err := os.MkdirAll(targetDir, 0755); err != nil {
+			return fmt.Errorf("failed to create target directory %s: %w", targetDir, err)
+		}
+
+		// Remove existing symlink or file if it exists
+		if _, err := os.Lstat(targetPath); err == nil {
+			if err := os.Remove(targetPath); err != nil {
+				return fmt.Errorf("failed to remove existing file %s: %w", targetPath, err)
+			}
+		}
+
+		// Get absolute path of source file
+		absSourcePath, err := filepath.Abs(path)
+		if err != nil {
+			return fmt.Errorf("failed to get absolute path of %s: %w", path, err)
+		}
+
+		// Create symlink
+		if err := os.Symlink(absSourcePath, targetPath); err != nil {
+			return fmt.Errorf("failed to create symlink from %s to %s: %w", targetPath, absSourcePath, err)
+		}
+
+		fmt.Printf("Created symlink: %s -> %s\n", targetPath, absSourcePath)
+		return nil
+	})
 }

@@ -1,4 +1,4 @@
-.PHONY: build template clean
+.PHONY: build template clean link
 
 # Build the templating program
 build:
@@ -7,6 +7,10 @@ build:
 # Run the templating process
 template: build
 	./vibeops
+
+# Create symlinks from build directory to BaseDir
+link: build
+	./vibeops -link
 
 # Clean up generated files
 clean:
