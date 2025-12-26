@@ -56,10 +56,10 @@
     "commands": ["git pull", "docker compose up --build -d"]
   },
   {
-    "repo": "{{.OrgName}}/SlashVibe",
+    "repo": "{{.OrgName}}/SlashVibeRepo",
     "branch": "refs/heads/main",
     "type": "git-webhook",
-    "dir": "{{.BaseDir}}/{{.OrgName}}/SlashVibe",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/SlashVibeRepo",
     "commands": ["git pull", "docker compose build", "docker compose down", "docker compose up -d"]
   },
   {
