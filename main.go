@@ -198,7 +198,7 @@ func createSymlinks(buildDir string, values map[string]interface{}) error {
 
 		// Create symlink
 		if err := os.Symlink(absSourcePath, targetPath); err != nil {
-			return fmt.Errorf("failed to create symlink from %s to %s: %w", targetPath, absSourcePath, err)
+			return fmt.Errorf("failed to create symlink from %s to %s: %w", absSourcePath, targetPath, err)
 		}
 
 		fmt.Printf("Created symlink: %s -> %s\n", targetPath, absSourcePath)
