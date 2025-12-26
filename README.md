@@ -9,7 +9,7 @@ This repository provides a Go-based templating system that processes template fi
 
 ### Prerequisites
 
-- Go 1.16 or later
+- Go 1.24 or later
 - Make
 
 ### Configuration
