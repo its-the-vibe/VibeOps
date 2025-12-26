@@ -2,44 +2,85 @@ package main
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/spf13/cobra"
 )
 
 func main() {
-	// Parse command line flags
-	linkMode := flag.Bool("link", false, "Create symlinks from build directory to BaseDir")
-	flag.Parse()
+	rootCmd := &cobra.Command{
+		Use:   "vibeops",
+		Short: "VibeOps - Templating and configuration management",
+		Long:  `A Go-based templating system that processes template files and generates configuration files.`,
+	}
 
-	// Load values from values.json
-	values, err := loadValues("values.json")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error loading values.json: %v\n", err)
+	// Template command
+	templateCmd := &cobra.Command{
+		Use:   "template",
+		Short: "Process template files and generate configuration files",
+		Long:  `Process all .tmpl files in the source folder and generate output files in the build folder.`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			// GetString error can be safely ignored as the flag is defined below
+			buildDir, _ := cmd.Flags().GetString("build-dir")
+			
+			// Load values from values.json
+			values, err := loadValues("values.json")
+			if err != nil {
+				return fmt.Errorf("error loading values.json: %w", err)
+			}
+
+			// Process templates
+			if err := processTemplates("source", buildDir, values); err != nil {
+				return fmt.Errorf("error processing templates: %w", err)
+			}
+
+			fmt.Println("Templates processed successfully!")
+			return nil
+		},
+	}
+
+	// Link command
+	linkCmd := &cobra.Command{
+		Use:   "link",
+		Short: "Create symlinks from build directory to BaseDir",
+		Long:  `Walk through the build directory and create symlinks to the BaseDir specified in values.json.`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			// GetString error can be safely ignored as the flag is defined below
+			buildDir, _ := cmd.Flags().GetString("build-dir")
+			
+			// Load values from values.json
+			values, err := loadValues("values.json")
+			if err != nil {
+				return fmt.Errorf("error loading values.json: %w", err)
+			}
+
+			// Create symlinks
+			if err := createSymlinks(buildDir, values); err != nil {
+				return fmt.Errorf("error creating symlinks: %w", err)
+			}
+
+			fmt.Println("Symlinks created successfully!")
+			return nil
+		},
+	}
+
+	// Add --build-dir flag to both commands
+	templateCmd.Flags().StringP("build-dir", "b", "build", "Output build directory")
+	linkCmd.Flags().StringP("build-dir", "b", "build", "Build directory to create symlinks from")
+
+	// Add commands to root
+	rootCmd.AddCommand(templateCmd)
+	rootCmd.AddCommand(linkCmd)
+
+	// Execute root command
+	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
-
-	// Handle link mode
-	if *linkMode {
-		if err := createSymlinks("build", values); err != nil {
-			fmt.Fprintf(os.Stderr, "Error creating symlinks: %v\n", err)
-			os.Exit(1)
-		}
-		fmt.Println("Symlinks created successfully!")
-		return
-	}
-
-	// Process templates
-	if err := processTemplates("source", "build", values); err != nil {
-		fmt.Fprintf(os.Stderr, "Error processing templates: %v\n", err)
-		os.Exit(1)
-	}
-
-	fmt.Println("Templates processed successfully!")
 }
 
 // loadValues reads and parses the values.json file

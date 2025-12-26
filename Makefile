@@ -6,11 +6,11 @@ build:
 
 # Run the templating process
 template: build
-	./vibeops
+	./vibeops template
 
 # Create symlinks from build directory to BaseDir
 link: build
-	./vibeops -link
+	./vibeops link
 
 # Clean up generated files
 clean:
