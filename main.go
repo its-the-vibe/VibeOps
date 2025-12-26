@@ -96,27 +96,28 @@ func processTemplates(sourceDir, buildDir string, values map[string]interface{})
 		}
 
 		// Process the template file
-		if err := processTemplateFile(path, buildDir, relPath, values); err != nil {
+		var outputFile string
+		if outputFile, err = processTemplateFile(path, buildDir, relPath, values); err != nil {
 			return fmt.Errorf("failed to process template %s: %w", path, err)
 		}
 
-		fmt.Printf("Processed: %s\n", path)
+		fmt.Printf("Processed: %s\n", outputFile)
 		return nil
 	})
 }
 
 // processTemplateFile reads a template file, applies values, and writes the output
-func processTemplateFile(srcPath, buildDir, relPath string, values map[string]interface{}) error {
+func processTemplateFile(srcPath, buildDir, relPath string, values map[string]interface{}) (string, error) {
 	// Read the template file
 	tmplContent, err := os.ReadFile(srcPath)
 	if err != nil {
-		return fmt.Errorf("failed to read template file: %w", err)
+		return "", fmt.Errorf("failed to read template file: %w", err)
 	}
 
 	// Parse the template
 	tmpl, err := template.New(filepath.Base(srcPath)).Parse(string(tmplContent))
 	if err != nil {
-		return fmt.Errorf("failed to parse template: %w", err)
+		return "", fmt.Errorf("failed to parse template: %w", err)
 	}
 
 	// Remove .tmpl extension from the output filename
@@ -126,22 +127,22 @@ func processTemplateFile(srcPath, buildDir, relPath string, values map[string]in
 	// Create parent directories if needed
 	outputDir := filepath.Dir(outputPath)
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
-		return fmt.Errorf("failed to create output directory: %w", err)
+		return "", fmt.Errorf("failed to create output directory: %w", err)
 	}
 
 	// Create the output file
 	outputFile, err := os.Create(outputPath)
 	if err != nil {
-		return fmt.Errorf("failed to create output file: %w", err)
+		return "", fmt.Errorf("failed to create output file: %w", err)
 	}
 	defer outputFile.Close()
 
 	// Execute the template and write to output file
 	if err := tmpl.Execute(outputFile, values); err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
+		return "", fmt.Errorf("failed to execute template: %w", err)
 	}
 
-	return nil
+	return outputPath, nil
 }
 
 // createSymlinks walks through the build directory and creates symlinks to BaseDir
