@@ -14,14 +14,17 @@ This repository provides a Go-based templating system that processes template fi
 
 ### Configuration
 
-1. Edit `values.json` to set the values for your templates:
+1. Rename `values.json.example` to `values.json` and set the values for your templates:
 
 ```json
 {
   "PoppitListName": "example-list",
   "RedisPassword": "example-redis-password",
   "OrgName": "its-the-vibe",
-  "BaseDir": "/home/user/projects"
+  "BaseDir": "/home/user/projects",
+  "SlackWebhookSecret": "example-slack-webhook-secret",
+  "GithubWebhookSecret": "example-github-webhook-secret",
+  "SlackBotToken": "example-slack-bot-token"
 }
 ```
 

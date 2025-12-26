@@ -1,0 +1,9 @@
+{
+  "PoppitListName": "example-list",
+  "RedisPassword": "example-redis-password",
+  "OrgName": "its-the-vibe",
+  "BaseDir": "/home/user/projects",
+  "SlackWebhookSecret": "example-slack-webhook-secret",
+  "GithubWebhookSecret": "example-github-webhook-secret",
+  "SlackBotToken": "example-slack-bot-token"
+}
