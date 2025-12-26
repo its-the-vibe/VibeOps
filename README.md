@@ -74,6 +74,27 @@ You can specify a custom build directory:
 ./vibeops link --build-dir /path/to/custom/build
 ```
 
+### Adding a New Project
+
+To add a new project to the configuration files:
+
+```bash
+./vibeops new-project [project-name]
+```
+
+This command will:
+1. Add the project to `source/its-the-vibe/SlackCompose/projects.json.tmpl`
+2. Add the project to `source/its-the-vibe/github-dispatcher/config.json.tmpl` with default commands:
+   - `git pull`
+   - `docker compose build`
+   - `docker compose down`
+   - `docker compose up -d`
+
+Example:
+```bash
+./vibeops new-project MyNewService
+```
+
 ### Other Commands
 
 Build the templating program only:
@@ -95,6 +116,8 @@ View all available commands:
 
 - `source/` - Contains template files (`.tmpl` extension)
 - `build/` - Generated configuration files (created automatically, not in source control)
-- `values.json` - Values to be applied to templates
-- `main.go` - Go templating program
+- `values.json` - Values to be applied to templates (gitignored, use `values.json.example` as template)
+- `cmd/` - Command implementations (template, link, new-project)
+- `internal/utils/` - Shared utility functions
+- `main.go` - Main application entry point
 - `Makefile` - Build and run commands
