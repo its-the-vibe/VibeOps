@@ -1,0 +1,93 @@
+[
+  {
+    "repo": "{{.OrgName}}/github-dispatcher",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/github-dispatcher",
+    "commands": ["git pull", "docker compose up --build -d"]
+  },
+  {
+    "repo": "{{.OrgName}}/github-webhook",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/github-webhook",
+    "commands": ["git pull", "docker compose up --build -d"]
+  },
+  {
+    "repo": "{{.OrgName}}/Poppit",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/Poppit",
+    "commands": ["git pull", "go build -o poppit"]
+  },
+  {
+    "repo": "{{.OrgName}}/OctoSlack",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/OctoSlack",
+    "commands": ["git pull", "docker compose up --build -d"]
+  },
+  {
+    "repo": "{{.OrgName}}/InnerGate",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/InnerGate",
+    "commands": ["git pull", "docker compose up --build -d"]
+  },
+  {
+    "repo": "{{.OrgName}}/SlackLiner",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/SlackLiner",
+    "commands": ["git pull", "docker compose up --build -d"]
+  },
+  {
+    "repo": "{{.OrgName}}/SlackRelay",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/SlackRelay",
+    "commands": ["git pull", "docker compose up --build -d"]
+  },
+  {
+    "repo": "{{.OrgName}}/SlackCommandRelay",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/SlackCommandRelay",
+    "commands": ["git pull", "docker compose up --build -d"]
+  },
+  {
+    "repo": "{{.OrgName}}/SlashVibe",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/SlashVibe",
+    "commands": ["git pull", "docker compose build", "docker compose down", "docker compose up -d"]
+  },
+  {
+    "repo": "{{.OrgName}}/TrashCommand",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/TrashCommand",
+    "commands": ["git pull", "docker compose build", "docker compose down", "docker compose up -d"]
+  },
+  {
+    "repo": "{{.OrgName}}/VibeMerge",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/VibeMerge",
+    "commands": ["git pull", "docker compose build", "docker compose down", "docker compose up -d"]
+  },  
+  {
+    "repo": "{{.OrgName}}/TimeBomb",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/TimeBomb",
+    "commands": ["git pull", "docker compose build", "docker compose down", "docker compose up -d"]
+  },
+  {
+    "repo": "{{.OrgName}}/SlackCompose",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/SlackCompose",
+    "commands": ["git pull", "docker compose build", "docker compose down", "docker compose up -d"]
+  }
+]

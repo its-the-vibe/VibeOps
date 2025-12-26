@@ -24,8 +24,9 @@ profile.cov
 go.work
 go.work.sum
 
+# Think we may need to explicitly not ignore these env files
 # env file
-.env
+#.env
 
 # Editor/IDE
 # .idea/
