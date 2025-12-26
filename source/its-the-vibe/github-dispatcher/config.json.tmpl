@@ -89,5 +89,12 @@
     "type": "git-webhook",
     "dir": "{{.BaseDir}}/{{.OrgName}}/SlackCompose",
     "commands": ["git pull", "docker compose build", "docker compose down", "docker compose up -d"]
+  },
+  {
+    "repo": "{{.OrgName}}/VibeOps",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/VibeOps",
+    "commands": ["git pull"]
   }
 ]
