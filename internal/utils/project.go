@@ -39,7 +39,8 @@ func AddProjectToProjectsJSON(filePath, projectName string) error {
 	// Check if project already exists
 	for _, p := range projects {
 		if p.Name == projectName {
-			return fmt.Errorf("project '%s' already exists in projects.json.tmpl", projectName)
+			fmt.Printf("project '%s' already exists in projects.json.tmpl\n", projectName)
+			return nil
 		}
 	}
 
@@ -87,7 +88,8 @@ func AddProjectToDispatcherConfig(filePath, projectName string, commands []strin
 	repoName := fmt.Sprintf("{{.OrgName}}/%s", projectName)
 	for _, c := range configs {
 		if c.Repo == repoName {
-			return fmt.Errorf("project '%s' already exists in github-dispatcher config.json.tmpl", projectName)
+			fmt.Printf("project '%s' already exists in github-dispatcher config.json.tmpl\n", projectName)
+			return nil
 		}
 	}
 

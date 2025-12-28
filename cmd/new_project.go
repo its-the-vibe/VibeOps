@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/its-the-vibe/VibeOps/internal/utils"
 	"github.com/spf13/cobra"
@@ -52,10 +53,45 @@ The project will be added with default commands: git pull, docker compose build,
 			}
 			fmt.Printf("✓ Added project to %s\n", catalogFile)
 
+			// Create project directory and .env.tmpl file
+			if err := createProjectDirAndEnv(projectName); err != nil {
+				return err
+			}
+
 			fmt.Printf("\n✓ Successfully added project '%s' to configuration files!\n", projectName)
 			return nil
 		},
 	}
 
 	return cmd
+}
+
+// createProjectDirAndEnv creates source/its-the-vibe/<projectName> and an empty .env file, idempotently
+func createProjectDirAndEnv(projectName string) error {
+	projectDir := fmt.Sprintf("source/its-the-vibe/%s", projectName)
+	envFile := fmt.Sprintf("%s/.env.tmpl", projectDir)
+
+	// Create directory if it doesn't exist
+	if _, err := os.Stat(projectDir); os.IsNotExist(err) {
+		if err := os.MkdirAll(projectDir, 0755); err != nil {
+			return fmt.Errorf("failed to create project directory: %w", err)
+		}
+		fmt.Printf("✓ Created directory %s\n", projectDir)
+	} else {
+		fmt.Printf("Directory %s already exists\n", projectDir)
+	}
+
+	// Create empty .env.tmpl file if it doesn't exist
+	if _, err := os.Stat(envFile); os.IsNotExist(err) {
+		f, err := os.Create(envFile)
+		if err != nil {
+			return fmt.Errorf("failed to create .env.tmpl file: %w", err)
+		}
+		f.Close()
+		fmt.Printf("✓ Created empty .env.tmpl file in %s\n", projectDir)
+	} else {
+		fmt.Printf(".env.tmpl file already exists in %s\n", projectDir)
+	}
+
+	return nil
 }

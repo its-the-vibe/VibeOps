@@ -84,6 +84,18 @@
     ]
   },
   {
+    "repo": "{{.OrgName}}/SlashVibeIssue",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/SlashVibeIssue",
+    "commands": [
+      "git pull",
+      "docker compose build",
+      "docker compose down",
+      "docker compose up -d"
+    ]
+  },
+  {
     "repo": "{{.OrgName}}/SlashVibeRepo",
     "branch": "refs/heads/main",
     "type": "git-webhook",
