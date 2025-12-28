@@ -21,6 +21,7 @@ The project will be added with default commands: git pull, docker compose build,
 			// Define file paths
 			projectsFile := "source/its-the-vibe/SlackCompose/projects.json.tmpl"
 			dispatcherFile := "source/its-the-vibe/github-dispatcher/config.json.tmpl"
+			catalogFile := "source/its-the-vibe/OctoCatalog/catalog.json.tmpl"
 
 			// Default commands as specified in the issue
 			defaultCommands := []string{
@@ -43,6 +44,13 @@ The project will be added with default commands: git pull, docker compose build,
 				return fmt.Errorf("failed to add project to config.json.tmpl: %w", err)
 			}
 			fmt.Printf("✓ Added project to %s\n", dispatcherFile)
+
+			// Add project to OctoCatalog catalog.json.tmpl
+			fmt.Printf("Adding project '%s' to %s...\n", projectName, catalogFile)
+			if err := utils.AddProjectToOctoCatalog(catalogFile, projectName); err != nil {
+				return fmt.Errorf("failed to add project to OctoCatalog catalog.json.tmpl: %w", err)
+			}
+			fmt.Printf("✓ Added project to %s\n", catalogFile)
 
 			fmt.Printf("\n✓ Successfully added project '%s' to configuration files!\n", projectName)
 			return nil
