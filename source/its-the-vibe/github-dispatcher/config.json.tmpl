@@ -132,6 +132,18 @@
     ]
   },
   {
+    "repo": "{{.OrgName}}/VibeDeploy",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/VibeDeploy",
+    "commands": [
+      "git pull",
+      "docker compose build",
+      "docker compose down",
+      "docker compose up -d"
+    ]
+  },
+  {
     "repo": "{{.OrgName}}/VibeMerge",
     "branch": "refs/heads/main",
     "type": "git-webhook",
