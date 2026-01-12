@@ -6,5 +6,6 @@
   "SlackWebhookSecret": "example-slack-webhook-secret",
   "GithubWebhookSecret": "example-github-webhook-secret",
   "SlackBotToken": "example-slack-bot-token",
-  "IssueSlackChannelID": "C123456790"
+  "IssueSlackChannelID": "C123456790",
+  "OctoSlackChannelID": "C123456790"
 }
