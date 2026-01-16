@@ -6,7 +6,9 @@
     "dir": "{{.BaseDir}}/{{.OrgName}}/InnerGate",
     "commands": [
       "git pull",
-      "docker compose up --build -d"
+      "docker compose build",
+      "docker compose down",
+      "docker compose up -d"
     ]
   },
   {
@@ -28,7 +30,9 @@
     "dir": "{{.BaseDir}}/{{.OrgName}}/OctoSlack",
     "commands": [
       "git pull",
-      "docker compose up --build -d"
+      "docker compose build",
+      "docker compose down",
+      "docker compose up -d"
     ]
   },
   {
@@ -48,7 +52,9 @@
     "dir": "{{.BaseDir}}/{{.OrgName}}/SlackCommandRelay",
     "commands": [
       "git pull",
-      "docker compose up --build -d"
+      "docker compose build",
+      "docker compose down",
+      "docker compose up -d"
     ]
   },
   {
@@ -70,7 +76,9 @@
     "dir": "{{.BaseDir}}/{{.OrgName}}/SlackLiner",
     "commands": [
       "git pull",
-      "docker compose up --build -d"
+      "docker compose build",
+      "docker compose down",
+      "docker compose up -d"
     ]
   },
   {
@@ -80,7 +88,9 @@
     "dir": "{{.BaseDir}}/{{.OrgName}}/SlackRelay",
     "commands": [
       "git pull",
-      "docker compose up --build -d"
+      "docker compose build",
+      "docker compose down",
+      "docker compose up -d"
     ]
   },
   {
@@ -172,7 +182,9 @@
     "dir": "{{.BaseDir}}/{{.OrgName}}/github-dispatcher",
     "commands": [
       "git pull",
-      "docker compose up --build -d"
+      "docker compose build",
+      "docker compose down",
+      "docker compose up -d"
     ]
   },
   {
@@ -182,7 +194,9 @@
     "dir": "{{.BaseDir}}/{{.OrgName}}/github-webhook",
     "commands": [
       "git pull",
-      "docker compose up --build -d"
+      "docker compose build",
+      "docker compose down",
+      "docker compose up -d"
     ]
   }
 ]
