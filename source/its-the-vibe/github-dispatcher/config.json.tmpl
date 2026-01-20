@@ -42,7 +42,9 @@
     "dir": "{{.BaseDir}}/{{.OrgName}}/Poppit",
     "commands": [
       "git pull",
-      "go build -o poppit"
+      "go build",
+      "go install",
+      "echo sudo systemctl restart poppit"
     ]
   },
   {
