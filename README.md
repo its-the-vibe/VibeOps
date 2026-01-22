@@ -28,6 +28,19 @@ This repository provides a Go-based templating system that processes template fi
 }
 ```
 
+2. (Optional) Rename `ports.json.example` to `ports.json` to manage port mappings:
+
+```json
+{
+  "github-webhook-port": 8081,
+  "SlackRelayPort": 8082
+}
+```
+
+The `ports.json` file is optional and allows you to centrally manage port mappings for your web projects. When present, the port values will be merged into your template values and can be referenced in templates using the same syntax as other values (e.g., `{{ .github-webhook-port }}`).
+
+If `ports.json` doesn't exist, the templating process will work normally without the port mappings.
+
 ### Running the Templating Process
 
 To process all template files and generate configuration files:
@@ -117,6 +130,7 @@ View all available commands:
 - `source/` - Contains template files (`.tmpl` extension)
 - `build/` - Generated configuration files (created automatically, not in source control)
 - `values.json` - Values to be applied to templates (gitignored, use `values.json.example` as template)
+- `ports.json` - Optional port mappings to be merged with values (gitignored, use `ports.json.example` as template)
 - `cmd/` - Command implementations (template, link, new-project)
 - `internal/utils/` - Shared utility functions
 - `main.go` - Main application entry point
