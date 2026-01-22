@@ -45,16 +45,16 @@ func LoadPorts(filename string) (map[string]interface{}, error) {
 // Port values will override any existing values with the same key
 func MergeValues(values, ports map[string]interface{}) map[string]interface{} {
 	merged := make(map[string]interface{})
-	
+
 	// Copy all values
 	for k, v := range values {
 		merged[k] = v
 	}
-	
+
 	// Merge in ports (will override if keys conflict)
 	for k, v := range ports {
 		merged[k] = v
 	}
-	
+
 	return merged
 }
