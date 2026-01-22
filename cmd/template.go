@@ -27,8 +27,17 @@ func NewTemplateCmd() *cobra.Command {
 				return fmt.Errorf("error loading values.json: %w", err)
 			}
 
+			// Load ports from ports.json (optional)
+			ports, err := utils.LoadPorts("ports.json")
+			if err != nil {
+				return fmt.Errorf("error loading ports.json: %w", err)
+			}
+
+			// Merge ports into values
+			mergedValues := utils.MergeValues(values, ports)
+
 			// Process templates
-			if err := processTemplates("source", buildDir, values); err != nil {
+			if err := processTemplates("source", buildDir, mergedValues); err != nil {
 				return fmt.Errorf("error processing templates: %w", err)
 			}
 

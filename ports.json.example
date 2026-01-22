@@ -1,0 +1,4 @@
+{
+  "github-webhook-port": 8081,
+  "SlackRelayPort": 8082
+}
