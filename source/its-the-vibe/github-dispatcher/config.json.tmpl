@@ -200,5 +200,17 @@
       "docker compose down",
       "docker compose up -d"
     ]
+  },
+  {
+    "repo": "{{.OrgName}}/rate-my",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/rate-my",
+    "commands": [
+      "git pull",
+      "docker compose build",
+      "docker compose down",
+      "docker compose up -d"
+    ]
   }
 ]
