@@ -37,7 +37,17 @@ This repository provides a Go-based templating system that processes template fi
 }
 ```
 
-The `ports.json` file is optional and allows you to centrally manage port mappings for your web projects. When present, the port values will be merged into your template values and can be referenced in templates using the same syntax as other values (e.g., `{{ .github-webhook-port }}`).
+The `ports.json` file is optional and allows you to centrally manage port mappings for your web projects. When present, the port values will be merged into your template values and can be referenced in templates.
+
+**Note:** For port names with hyphens (like `github-webhook-port`), use the `index` function in templates:
+```
+{{ index . "github-webhook-port" }}
+```
+
+For port names without hyphens (like `SlackRelayPort`), use the standard syntax:
+```
+{{ .SlackRelayPort }}
+```
 
 If `ports.json` doesn't exist, the templating process will work normally without the port mappings.
 
