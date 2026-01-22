@@ -2,21 +2,21 @@
   {
     "name": "github-webhook",
     "path": "github-webhook",
-    "target": "http://host.docker.internal:8081/webhook"
+    "target": "http://host.docker.internal:{{ index . "github-webhook-port" }}/webhook"
   },
   {
     "name": "SlackRelay",
     "path": "slack-webhook",
-    "target": "http://host.docker.internal:8082/slack"
+    "target": "http://host.docker.internal:{{.SlackRelayPort}}/slack"
   },
   {
     "name": "SlackCommandRelay",
     "path": "slack-command",
-    "target": "http://host.docker.internal:8083/command"
+    "target": "http://host.docker.internal:{{.SlackCommandRelayPort}}/command"
   },
   {
     "name": "OctoCatalog",
     "path": "octo-catalog",
-    "target": "http://host.docker.internal:8085"
+    "target": "http://host.docker.internal:{{.OctoCatalogPort}}"
   }  
 ]
