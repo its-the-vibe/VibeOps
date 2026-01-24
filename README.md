@@ -51,6 +51,30 @@ For port names without hyphens (like `SlackRelayPort`), use the standard syntax:
 
 If `ports.json` doesn't exist, the templating process will work normally without the port mappings.
 
+3. Rename `projects.json.example` to `projects.json` to define your projects:
+
+```json
+[
+  {
+    "name": "MyProject",
+    "allowVibeDeploy": true,
+    "isDockerProject": true,
+    "useWithSlackCompose": true,
+    "useWithGitHubIssue": true
+  }
+]
+```
+
+The `projects.json` file defines all projects in your organization. Each project can have the following properties:
+- `name` (required): The project/repository name
+- `allowVibeDeploy` (optional, default: true): Whether the project can be deployed via VibeDeploy
+- `isDockerProject` (optional, default: true): Whether to use Docker commands (git pull, docker compose build/down/up)
+- `buildCommands` (optional): Custom build commands (used when `isDockerProject` is false)
+- `useWithSlackCompose` (optional, default: true): Include in SlackCompose project list
+- `useWithGitHubIssue` (optional, default: true): Include in GitHub issue integration
+
+This file is used to generate configuration files for SlackCompose, github-dispatcher, and OctoCatalog.
+
 ### Running the Templating Process
 
 To process all template files and generate configuration files:
@@ -99,24 +123,33 @@ You can specify a custom build directory:
 
 ### Adding a New Project
 
-To add a new project to the configuration files:
+To add a new project to the configuration:
 
 ```bash
 ./vibeops new-project [project-name]
 ```
 
 This command will:
-1. Add the project to `source/its-the-vibe/SlackCompose/projects.json.tmpl`
-2. Add the project to `source/its-the-vibe/github-dispatcher/config.json.tmpl` with default commands:
-   - `git pull`
-   - `docker compose build`
-   - `docker compose down`
-   - `docker compose up -d`
+1. Add the project to `projects.json` with default settings:
+   - `allowVibeDeploy`: true
+   - `isDockerProject`: true (with default Docker commands)
+   - `useWithSlackCompose`: true
+   - `useWithGitHubIssue`: true
+2. Create a project directory at `source/its-the-vibe/[project-name]`
+3. Create an empty `.env.tmpl` file in the project directory
+
+After adding a project, run `./vibeops template` to generate all configuration files. The following files will be automatically generated from `projects.json`:
+- `build/its-the-vibe/SlackCompose/projects.json`
+- `build/its-the-vibe/github-dispatcher/config.json`
+- `build/its-the-vibe/OctoCatalog/catalog.json`
 
 Example:
 ```bash
 ./vibeops new-project MyNewService
+./vibeops template
 ```
+
+To customize project settings, edit `projects.json` directly. See `projects.json.example` for available options.
 
 ### Other Commands
 
@@ -140,6 +173,7 @@ View all available commands:
 - `source/` - Contains template files (`.tmpl` extension)
 - `build/` - Generated configuration files (created automatically, not in source control)
 - `values.json` - Values to be applied to templates (gitignored, use `values.json.example` as template)
+- `projects.json` - Project definitions (gitignored, use `projects.json.example` as template)
 - `ports.json` - Optional port mappings to be merged with values (gitignored, use `ports.json.example` as template)
 - `cmd/` - Command implementations (template, link, new-project)
 - `internal/utils/` - Shared utility functions

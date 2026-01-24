@@ -2,8 +2,10 @@ package utils
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
+	"sort"
 )
 
 // Project represents a project entry in projects.json
@@ -66,4 +68,66 @@ func LoadProjectsMap(filename string) ([]map[string]interface{}, error) {
 		return nil, fmt.Errorf("error unmarshalling projects: %w", err)
 	}
 	return projectsList, nil
+}
+
+// AddProjectToProjectsFile adds a new project to the root projects.json file
+func AddProjectToProjectsFile(filePath, projectName string) error {
+	// Read the file (or create empty array if file doesn't exist)
+	var projects []Project
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			// File doesn't exist, start with empty array
+			projects = []Project{}
+		} else {
+			return fmt.Errorf("failed to read file: %w", err)
+		}
+	} else {
+		// Parse existing projects
+		if err := json.Unmarshal(data, &projects); err != nil {
+			return fmt.Errorf("failed to parse JSON: %w", err)
+		}
+	}
+
+	// Check if project already exists
+	for _, p := range projects {
+		if p.Name == projectName {
+			fmt.Printf("project '%s' already exists in projects.json\n", projectName)
+			return nil
+		}
+	}
+
+	// Add new project entry with default values
+	// Create separate boolean variables to avoid shared references
+	allowVibeDeploy := true
+	isDockerProject := true
+	useWithSlackCompose := true
+	useWithGitHubIssue := true
+	
+	newProject := Project{
+		Name:                projectName,
+		AllowVibeDeploy:     &allowVibeDeploy,
+		IsDockerProject:     &isDockerProject,
+		UseWithSlackCompose: &useWithSlackCompose,
+		UseWithGitHubIssue:  &useWithGitHubIssue,
+	}
+	projects = append(projects, newProject)
+
+	// Sort projects alphabetically by name
+	sort.Slice(projects, func(i, j int) bool {
+		return projects[i].Name < projects[j].Name
+	})
+
+	// Marshal back to JSON with proper formatting
+	output, err := json.MarshalIndent(projects, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to marshal JSON: %w", err)
+	}
+
+	// Write back to file
+	if err := os.WriteFile(filePath, append(output, '\n'), 0644); err != nil {
+		return fmt.Errorf("failed to write file: %w", err)
+	}
+
+	return nil
 }

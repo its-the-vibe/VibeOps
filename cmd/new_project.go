@@ -8,57 +8,32 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// NewNewProjectCmd creates the new-project command
-func NewNewProjectCmd() *cobra.Command {
+// NewProjectCmd creates the new-project command
+func NewProjectCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "new-project [project-name]",
-		Short: "Add a new project to configuration files",
-		Long: `Add a new project to both projects.json.tmpl and github-dispatcher config.json.tmpl.
-The project will be added with default commands: git pull, docker compose build, docker compose down, docker compose up -d`,
+		Short: "Add a new project to projects.json",
+		Long: `Add a new project to projects.json. The project will be added as a Docker project 
+with default settings. All configuration files (SlackCompose, github-dispatcher, OctoCatalog) 
+will be automatically generated from projects.json when you run 'vibeops template'.`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			projectName := args[0]
 
-			// Define file paths
-			projectsFile := "source/its-the-vibe/SlackCompose/projects.json.tmpl"
-			dispatcherFile := "source/its-the-vibe/github-dispatcher/config.json.tmpl"
-			catalogFile := "source/its-the-vibe/OctoCatalog/catalog.json.tmpl"
-
-			// Default commands as specified in the issue
-			defaultCommands := []string{
-				"git pull",
-				"docker compose build",
-				"docker compose down",
-				"docker compose up -d",
+			// Add project to root projects.json
+			fmt.Printf("Adding project '%s' to projects.json...\n", projectName)
+			if err := utils.AddProjectToProjectsFile("projects.json", projectName); err != nil {
+				return fmt.Errorf("failed to add project to projects.json: %w", err)
 			}
-
-			// Add project to projects.json.tmpl
-			fmt.Printf("Adding project '%s' to %s...\n", projectName, projectsFile)
-			if err := utils.AddProjectToProjectsJSON(projectsFile, projectName); err != nil {
-				return fmt.Errorf("failed to add project to projects.json.tmpl: %w", err)
-			}
-			fmt.Printf("✓ Added project to %s\n", projectsFile)
-
-			// Add project to github-dispatcher config.json.tmpl
-			fmt.Printf("Adding project '%s' to %s...\n", projectName, dispatcherFile)
-			if err := utils.AddProjectToDispatcherConfig(dispatcherFile, projectName, defaultCommands); err != nil {
-				return fmt.Errorf("failed to add project to config.json.tmpl: %w", err)
-			}
-			fmt.Printf("✓ Added project to %s\n", dispatcherFile)
-
-			// Add project to OctoCatalog catalog.json.tmpl
-			fmt.Printf("Adding project '%s' to %s...\n", projectName, catalogFile)
-			if err := utils.AddProjectToOctoCatalog(catalogFile, projectName); err != nil {
-				return fmt.Errorf("failed to add project to OctoCatalog catalog.json.tmpl: %w", err)
-			}
-			fmt.Printf("✓ Added project to %s\n", catalogFile)
+			fmt.Printf("✓ Added project to projects.json\n")
 
 			// Create project directory and .env.tmpl file
 			if err := createProjectDirAndEnv(projectName); err != nil {
 				return err
 			}
 
-			fmt.Printf("\n✓ Successfully added project '%s' to configuration files!\n", projectName)
+			fmt.Printf("\n✓ Successfully added project '%s'!\n", projectName)
+			fmt.Printf("Run 'vibeops template' to generate configuration files.\n")
 			return nil
 		},
 	}
