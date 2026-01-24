@@ -1,0 +1,22 @@
+[
+  {
+    "name": "ExampleProject",
+    "allowVibeDeploy": true,
+    "isDockerProject": true,
+    "useWithSlackCompose": true,
+    "useWithGitHubIssue": true
+  },
+  {
+    "name": "AnotherProject",
+    "allowVibeDeploy": false,
+    "isDockerProject": false,
+    "buildCommands": [
+      "git pull",
+      "npm install",
+      "npm run build",
+      "pm2 restart app"
+    ],
+    "useWithSlackCompose": true,
+    "useWithGitHubIssue": false
+  }
+]

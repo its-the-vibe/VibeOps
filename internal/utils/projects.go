@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
 )
 
 // Project represents a project entry in projects.json
@@ -66,4 +67,56 @@ func LoadProjectsMap(filename string) ([]map[string]interface{}, error) {
 		return nil, fmt.Errorf("error unmarshalling projects: %w", err)
 	}
 	return projectsList, nil
+}
+
+// AddProjectToProjectsFile adds a new project to the root projects.json file
+func AddProjectToProjectsFile(filePath, projectName string) error {
+	// Read the file
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to read file: %w", err)
+	}
+
+	// Parse existing projects
+	var projects []Project
+	if err := json.Unmarshal(data, &projects); err != nil {
+		return fmt.Errorf("failed to parse JSON: %w", err)
+	}
+
+	// Check if project already exists
+	for _, p := range projects {
+		if p.Name == projectName {
+			fmt.Printf("project '%s' already exists in projects.json\n", projectName)
+			return nil
+		}
+	}
+
+	// Add new project entry with default values
+	trueVal := true
+	newProject := Project{
+		Name:                projectName,
+		AllowVibeDeploy:     &trueVal,
+		IsDockerProject:     &trueVal,
+		UseWithSlackCompose: &trueVal,
+		UseWithGitHubIssue:  &trueVal,
+	}
+	projects = append(projects, newProject)
+
+	// Sort projects alphabetically by name
+	sort.Slice(projects, func(i, j int) bool {
+		return projects[i].Name < projects[j].Name
+	})
+
+	// Marshal back to JSON with proper formatting
+	output, err := json.MarshalIndent(projects, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to marshal JSON: %w", err)
+	}
+
+	// Write back to file
+	if err := os.WriteFile(filePath, append(output, '\n'), 0644); err != nil {
+		return fmt.Errorf("failed to write file: %w", err)
+	}
+
+	return nil
 }
