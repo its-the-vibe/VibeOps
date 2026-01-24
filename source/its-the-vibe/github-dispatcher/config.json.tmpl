@@ -190,6 +190,16 @@
     ]
   },
   {
+    "repo": "{{.OrgName}}/git-committer",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/git-committer",
+    "commands": [
+      "git pull",
+      "make install"
+    ]
+  },
+  {
     "repo": "{{.OrgName}}/github-dispatcher",
     "branch": "refs/heads/main",
     "type": "git-webhook",
@@ -220,7 +230,7 @@
     "dir": "{{.BaseDir}}/{{.OrgName}}/issue-summariser",
     "commands": [
       "git pull",
-      "make install",
+      "make install"
     ]
   },
   {
