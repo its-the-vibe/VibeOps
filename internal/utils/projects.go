@@ -9,11 +9,11 @@ import (
 // Project represents a project entry in projects.json
 type Project struct {
 	Name                string   `json:"name"`
-	AllowVibeDeploy     bool     `json:"allowVibeDeploy"`
+	AllowVibeDeploy     *bool    `json:"allowVibeDeploy"`
 	IsDockerProject     *bool    `json:"isDockerProject,omitempty"`
 	BuildCommands       []string `json:"buildCommands,omitempty"`
-	UseWithSlackCompose bool     `json:"useWithSlackCompose,omitempty"`
-	UseWithGitHubIssue  bool     `json:"useWithGitHubIssue,omitempty"`
+	UseWithSlackCompose *bool    `json:"useWithSlackCompose,omitempty"`
+	UseWithGitHubIssue  *bool    `json:"useWithGitHubIssue,omitempty"`
 }
 
 // LoadProjects reads and parses the projects.json file, setting defaults
@@ -34,14 +34,17 @@ func LoadProjects(filename string) ([]Project, error) {
 			def := true
 			projects[i].IsDockerProject = &def
 		}
-		if !projects[i].AllowVibeDeploy {
-			projects[i].AllowVibeDeploy = true
+		if projects[i].AllowVibeDeploy == nil {
+			def := true
+			projects[i].AllowVibeDeploy = &def
 		}
-		if !projects[i].UseWithSlackCompose {
-			projects[i].UseWithSlackCompose = true
+		if projects[i].UseWithSlackCompose == nil {
+			def := true
+			projects[i].UseWithSlackCompose = &def
 		}
-		if !projects[i].UseWithGitHubIssue {
-			projects[i].UseWithGitHubIssue = true
+		if projects[i].UseWithGitHubIssue == nil {
+			def := true
+			projects[i].UseWithGitHubIssue = &def
 		}
 	}
 

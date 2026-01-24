@@ -2,159 +2,29 @@
   {
     "actionId": "SlackCompose",
     "options": [
-      {
-        "text": "InnerGate",
-        "value": "InnerGate"
-      },
-      {
-        "text": "OctoCatalog",
-        "value": "OctoCatalog"
-      },
-      {
-        "text": "OctoSlack",
-        "value": "OctoSlack"
-      },
-      {
-        "text": "SlackCommandRelay",
-        "value": "SlackCommandRelay"
-      },
-      {
-        "text": "SlackCompose",
-        "value": "SlackCompose"
-      },
-      {
-        "text": "SlackLiner",
-        "value": "SlackLiner"
-      },
-      {
-        "text": "SlackRelay",
-        "value": "SlackRelay"
-      },
-      {
-        "text": "SlashVibeIssue",
-        "value": "SlashVibeIssue"
-      },
-      {
-        "text": "SlashVibeRepo",
-        "value": "SlashVibeRepo"
-      },
-      {
-        "text": "TimeBomb",
-        "value": "TimeBomb"
-      },
-      {
-        "text": "TrashCommand",
-        "value": "TrashCommand"
-      },
-      {
-        "text": "VibeDeploy",
-        "value": "VibeDeploy"
-      },
-      {
-        "text": "VibeMerge",
-        "value": "VibeMerge"
-      },
-      {
-        "text": "github-dispatcher",
-        "value": "github-dispatcher"
-      },
-      {
-        "text": "github-webhook",
-        "value": "github-webhook"
-      },
-      {
-        "text": "rate-my",
-        "value": "rate-my"
-      }
+      {{- $first := true }}
+      {{- range $i, $p := .Projects }}
+        {{- if $p.useWithSlackCompose }}{{if not $first}},{{end}}
+        {
+          "text": "{{$p.name}}",
+          "value": "{{$p.name}}"
+        }
+        {{- $first = false }}{{end}}
+      {{- end }}
     ]
   },
   {
     "actionId": "SlashVibeIssue",
     "options": [
-      {
-        "text": "InnerGate",
-        "value": "InnerGate"
-      },
-      {
-        "text": "OctoCatalog",
-        "value": "OctoCatalog"
-      },
-      {
-        "text": "OctoSlack",
-        "value": "OctoSlack"
-      },
-      {
-        "text": "Poppit",
-        "value": "Poppit"
-      },
-      {
-        "text": "SlackCommandRelay",
-        "value": "SlackCommandRelay"
-      },
-      {
-        "text": "SlackCompose",
-        "value": "SlackCompose"
-      },
-      {
-        "text": "SlackLiner",
-        "value": "SlackLiner"
-      },
-      {
-        "text": "SlackRelay",
-        "value": "SlackRelay"
-      },
-      {
-        "text": "SlashVibeIssue",
-        "value": "SlashVibeIssue"
-      },
-      {
-        "text": "SlashVibeRepo",
-        "value": "SlashVibeRepo"
-      },
-      {
-        "text": "ThisIsFine",
-        "value": "{{.OrgName}}/ThisIsFine"
-      },
-      {
-        "text": "TimeBomb",
-        "value": "TimeBomb"
-      },
-      {
-        "text": "TrashCommand",
-        "value": "TrashCommand"
-      },
-      {
-        "text": "VibeDeploy",
-        "value": "VibeDeploy"
-      },
-      {
-        "text": "VibeMerge",
-        "value": "VibeMerge"
-      },
-      {
-        "text": "VibeOps",
-        "value": "VibeOps"
-      },
-      {
-        "text": "git-committer",
-        "value": "git-committer"
-      },
-      {
-        "text": "github-dispatcher",
-        "value": "github-dispatcher"
-      },
-      {
-        "text": "github-webhook",
-        "value": "github-webhook"
-      },
-      {
-        "text": "issue-summariser",
-        "value": "issue-summariser"
-      },
-      {
-        "text": "rate-my",
-        "value": "rate-my"
-      }
+      {{- $first := true }}
+      {{- range $i, $p := .Projects }}
+        {{- if $p.useWithGitHubIssue }}{{if not $first}},{{end}}
+        {
+          "text": "{{$p.name}}",
+          "value": "{{$p.name}}"
+        }
+        {{- $first = false }}{{end}}
+      {{- end }}
     ]
   }
 ]
