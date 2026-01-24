@@ -11,11 +11,11 @@ import (
 // Project represents a project entry in projects.json
 type Project struct {
 	Name                string   `json:"name"`
-	AllowVibeDeploy     *bool    `json:"allowVibeDeploy"`
-	IsDockerProject     *bool    `json:"isDockerProject,omitempty"`
+	AllowVibeDeploy     bool     `json:"allowVibeDeploy,omitempty"`
+	IsDockerProject     bool     `json:"isDockerProject,omitempty"`
 	BuildCommands       []string `json:"buildCommands,omitempty"`
-	UseWithSlackCompose *bool    `json:"useWithSlackCompose,omitempty"`
-	UseWithGitHubIssue  *bool    `json:"useWithGitHubIssue,omitempty"`
+	UseWithSlackCompose bool     `json:"useWithSlackCompose,omitempty"`
+	UseWithGitHubIssue  bool     `json:"useWithGitHubIssue,omitempty"`
 }
 
 // LoadProjects reads and parses the projects.json file, setting defaults
@@ -28,26 +28,6 @@ func LoadProjects(filename string) ([]Project, error) {
 	var projects []Project
 	if err := json.Unmarshal(data, &projects); err != nil {
 		return nil, fmt.Errorf("failed to parse JSON: %w", err)
-	}
-
-	// Set defaults
-	for i := range projects {
-		if projects[i].IsDockerProject == nil {
-			def := true
-			projects[i].IsDockerProject = &def
-		}
-		if projects[i].AllowVibeDeploy == nil {
-			def := true
-			projects[i].AllowVibeDeploy = &def
-		}
-		if projects[i].UseWithSlackCompose == nil {
-			def := true
-			projects[i].UseWithSlackCompose = &def
-		}
-		if projects[i].UseWithGitHubIssue == nil {
-			def := true
-			projects[i].UseWithGitHubIssue = &def
-		}
 	}
 
 	return projects, nil
@@ -97,19 +77,12 @@ func AddProjectToProjectsFile(filePath, projectName string) error {
 		}
 	}
 
-	// Add new project entry with default values
-	// Create separate boolean variables to avoid shared references
-	allowVibeDeploy := true
-	isDockerProject := true
-	useWithSlackCompose := true
-	useWithGitHubIssue := true
-	
 	newProject := Project{
 		Name:                projectName,
-		AllowVibeDeploy:     &allowVibeDeploy,
-		IsDockerProject:     &isDockerProject,
-		UseWithSlackCompose: &useWithSlackCompose,
-		UseWithGitHubIssue:  &useWithGitHubIssue,
+		AllowVibeDeploy:     true,
+		IsDockerProject:     true,
+		UseWithSlackCompose: true,
+		UseWithGitHubIssue:  true,
 	}
 	projects = append(projects, newProject)
 
