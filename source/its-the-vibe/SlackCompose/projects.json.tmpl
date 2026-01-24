@@ -1,66 +1,11 @@
 [
+  {{- $first := true }}
+  {{- range $i, $p := .Projects }}
+    {{- if $p.useWithSlackCompose }}{{if not $first}},{{end}}
     {
-        "name": "InnerGate",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/InnerGate"
-    },
-    {
-        "name": "OctoCatalog",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/OctoCatalog"
-    },
-    {
-        "name": "OctoSlack",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/OctoSlack"
-    },
-    {
-        "name": "SlackCommandRelay",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/SlackCommandRelay"
-    },
-    {
-        "name": "SlackCompose",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/SlackCompose"
-    },
-    {
-        "name": "SlackLiner",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/SlackLiner"
-    },
-    {
-        "name": "SlackRelay",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/SlackRelay"
-    },
-    {
-        "name": "SlashVibeIssue",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/SlashVibeIssue"
-    },
-    {
-        "name": "SlashVibeRepo",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/SlashVibeRepo"
-    },
-    {
-        "name": "TimeBomb",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/TimeBomb"
-    },
-    {
-        "name": "TrashCommand",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/TrashCommand"
-    },
-    {
-        "name": "VibeDeploy",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/VibeDeploy"
-    },
-    {
-        "name": "VibeMerge",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/VibeMerge"
-    },
-    {
-        "name": "github-dispatcher",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/github-dispatcher"
-    },
-    {
-        "name": "github-webhook",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/github-webhook"
-    },
-    {
-        "name": "rate-my",
-        "working_dir": "{{.BaseDir}}/{{.OrgName}}/rate-my"
+      "name": "{{$p.name}}",
+      "working_dir": "{{$.BaseDir}}/{{$.OrgName}}/{{$p.name}}"
     }
+    {{- $first = false }}{{end}}
+  {{- end }}
 ]
