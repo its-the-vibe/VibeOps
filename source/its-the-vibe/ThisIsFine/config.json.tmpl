@@ -1,21 +1,11 @@
 {
   "port": {{.ThisIsFinePort}},
   "services": [
-    "{{.OrgName}}/InnerGate",
-    "{{.OrgName}}/OctoCatalog",
-    "{{.OrgName}}/OctoSlack",
-    "{{.OrgName}}/SlackCommandRelay",
-    "{{.OrgName}}/SlackCompose",
-    "{{.OrgName}}/SlackLiner",
-    "{{.OrgName}}/SlackRelay",
-    "{{.OrgName}}/SlashVibeIssue",
-    "{{.OrgName}}/SlashVibeRepo",
-    "{{.OrgName}}/TimeBomb",
-    "{{.OrgName}}/TrashCommand",
-    "{{.OrgName}}/VibeDeploy",
-    "{{.OrgName}}/VibeMerge",
-    "{{.OrgName}}/github-dispatcher",
-    "{{.OrgName}}/github-webhook",
-    "{{.OrgName}}/rate-my"
+  {{- $first := true }}
+  {{- range $i, $p := .Projects }}
+    {{- if $p.isDockerProject }}{{if not $first}},{{end}}
+    "{{$.OrgName}}/{{$p.name}}"
+    {{- $first = false }}{{end}}
+  {{- end }}
   ]
 }
