@@ -214,6 +214,16 @@
     ]
   },
   {
+    "repo": "{{.OrgName}}/issue-summariser",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/issue-summariser",
+    "commands": [
+      "git pull",
+      "make install",
+    ]
+  },
+  {
     "repo": "{{.OrgName}}/rate-my",
     "branch": "refs/heads/main",
     "type": "git-webhook",
