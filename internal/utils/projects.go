@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"sort"
@@ -71,16 +72,21 @@ func LoadProjectsMap(filename string) ([]map[string]interface{}, error) {
 
 // AddProjectToProjectsFile adds a new project to the root projects.json file
 func AddProjectToProjectsFile(filePath, projectName string) error {
-	// Read the file
+	// Read the file (or create empty array if file doesn't exist)
+	var projects []Project
 	data, err := os.ReadFile(filePath)
 	if err != nil {
-		return fmt.Errorf("failed to read file: %w", err)
-	}
-
-	// Parse existing projects
-	var projects []Project
-	if err := json.Unmarshal(data, &projects); err != nil {
-		return fmt.Errorf("failed to parse JSON: %w", err)
+		if errors.Is(err, os.ErrNotExist) {
+			// File doesn't exist, start with empty array
+			projects = []Project{}
+		} else {
+			return fmt.Errorf("failed to read file: %w", err)
+		}
+	} else {
+		// Parse existing projects
+		if err := json.Unmarshal(data, &projects); err != nil {
+			return fmt.Errorf("failed to parse JSON: %w", err)
+		}
 	}
 
 	// Check if project already exists
@@ -92,13 +98,18 @@ func AddProjectToProjectsFile(filePath, projectName string) error {
 	}
 
 	// Add new project entry with default values
-	trueVal := true
+	// Create separate boolean variables to avoid shared references
+	allowVibeDeploy := true
+	isDockerProject := true
+	useWithSlackCompose := true
+	useWithGitHubIssue := true
+	
 	newProject := Project{
 		Name:                projectName,
-		AllowVibeDeploy:     &trueVal,
-		IsDockerProject:     &trueVal,
-		UseWithSlackCompose: &trueVal,
-		UseWithGitHubIssue:  &trueVal,
+		AllowVibeDeploy:     &allowVibeDeploy,
+		IsDockerProject:     &isDockerProject,
+		UseWithSlackCompose: &useWithSlackCompose,
+		UseWithGitHubIssue:  &useWithGitHubIssue,
 	}
 	projects = append(projects, newProject)
 
