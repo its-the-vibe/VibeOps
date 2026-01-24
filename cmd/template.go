@@ -27,6 +27,13 @@ func NewTemplateCmd() *cobra.Command {
 				return fmt.Errorf("error loading values.json: %w", err)
 			}
 
+			// Load projects as []map[string]interface{} for template use
+			projectsList, err := utils.LoadProjectsMap("projects.json")
+			if err != nil {
+				return fmt.Errorf("error loading projects.json: %w", err)
+			}
+			values["Projects"] = projectsList
+
 			// Load ports from ports.json (optional)
 			ports, err := utils.LoadPorts("ports.json")
 			if err != nil {

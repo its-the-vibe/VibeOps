@@ -40,3 +40,6 @@ vibeops
 values.json
 values.json.rick
 ports.json
+projects.json
+
+.DS_Store
