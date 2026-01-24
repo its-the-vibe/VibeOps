@@ -120,6 +120,18 @@
     ]
   },
   {
+    "repo": "{{.OrgName}}/ThisIsFine",
+    "branch": "refs/heads/main",
+    "type": "git-webhook",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/ThisIsFine",
+    "commands": [
+      "git pull",
+      "go build",
+      "go install",
+      "echo systemctl restart thisisfine"
+    ]
+  },
+  {
     "repo": "{{.OrgName}}/TimeBomb",
     "branch": "refs/heads/main",
     "type": "git-webhook",
