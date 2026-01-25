@@ -11,11 +11,11 @@ import (
 // Project represents a project entry in projects.json
 type Project struct {
 	Name                string   `json:"name"`
-	AllowVibeDeploy     bool     `json:"allowVibeDeploy,omitempty"`
-	IsDockerProject     bool     `json:"isDockerProject,omitempty"`
+	AllowVibeDeploy     bool     `json:"allowVibeDeploy"`
+	IsDockerProject     bool     `json:"isDockerProject"`
 	BuildCommands       []string `json:"buildCommands,omitempty"`
-	UseWithSlackCompose bool     `json:"useWithSlackCompose,omitempty"`
-	UseWithGitHubIssue  bool     `json:"useWithGitHubIssue,omitempty"`
+	UseWithSlackCompose bool     `json:"useWithSlackCompose"`
+	UseWithGitHubIssue  bool     `json:"useWithGitHubIssue"`
 }
 
 // LoadProjects reads and parses the projects.json file, setting defaults
