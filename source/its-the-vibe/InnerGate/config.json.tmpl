@@ -18,5 +18,10 @@
     "name": "OctoCatalog",
     "path": "octo-catalog",
     "target": "http://host.docker.internal:{{.OctoCatalogPort}}"
-  }  
+  },
+  {
+    "name": "starling-webhook",
+    "path": "starling-webhook",
+    "target": "http://host.docker.internal:{{ index . "starling-webhook-port" }}/webhook"
+  }
 ]
