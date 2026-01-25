@@ -23,5 +23,10 @@
     "name": "starling-webhook",
     "path": "starling-webhook",
     "target": "http://host.docker.internal:{{ index . "starling-webhook-port" }}/webhook"
+  },
+  {
+    "name": "monzo-webhook",
+    "path": "monzo-webhook",
+    "target": "http://host.docker.internal:{{ index . "monzo-webhook-port" }}/webhook"
   }
 ]
