@@ -10,6 +10,8 @@ import (
 
 // NewProjectCmd creates the new-project command
 func NewProjectCmd() *cobra.Command {
+	var noEnv bool
+
 	cmd := &cobra.Command{
 		Use:   "new-project [project-name]",
 		Short: "Add a new project to projects.json",
@@ -28,7 +30,7 @@ will be automatically generated from projects.json when you run 'vibeops templat
 			fmt.Printf("✓ Added project to projects.json\n")
 
 			// Create project directory and .env.tmpl file
-			if err := createProjectDirAndEnv(projectName); err != nil {
+			if err := createProjectDirAndEnv(projectName, noEnv); err != nil {
 				return err
 			}
 
@@ -38,11 +40,13 @@ will be automatically generated from projects.json when you run 'vibeops templat
 		},
 	}
 
+	cmd.Flags().BoolVar(&noEnv, "no-env", false, "Skip creation of the sample .env.tmpl file")
+
 	return cmd
 }
 
 // createProjectDirAndEnv creates source/its-the-vibe/<projectName> and an empty .env file, idempotently
-func createProjectDirAndEnv(projectName string) error {
+func createProjectDirAndEnv(projectName string, noEnv bool) error {
 	projectDir := fmt.Sprintf("source/its-the-vibe/%s", projectName)
 	envFile := fmt.Sprintf("%s/.env.tmpl", projectDir)
 
@@ -54,6 +58,12 @@ func createProjectDirAndEnv(projectName string) error {
 		fmt.Printf("✓ Created directory %s\n", projectDir)
 	} else {
 		fmt.Printf("Directory %s already exists\n", projectDir)
+	}
+
+	// Skip .env.tmpl creation if --no-env flag is set
+	if noEnv {
+		fmt.Printf("Skipping .env.tmpl file creation (--no-env flag set)\n")
+		return nil
 	}
 
 	// Create empty .env.tmpl file if it doesn't exist
