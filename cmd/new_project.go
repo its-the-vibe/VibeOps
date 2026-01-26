@@ -45,7 +45,7 @@ will be automatically generated from projects.json when you run 'vibeops templat
 	return cmd
 }
 
-// createProjectDirAndEnv creates source/its-the-vibe/<projectName> and an empty .env file, idempotently
+// createProjectDirAndEnv creates source/its-the-vibe/<projectName> and optionally an empty .env file, idempotently
 func createProjectDirAndEnv(projectName string, noEnv bool) error {
 	projectDir := fmt.Sprintf("source/its-the-vibe/%s", projectName)
 	envFile := fmt.Sprintf("%s/.env.tmpl", projectDir)
