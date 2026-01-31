@@ -22,7 +22,7 @@
     ],
     "restartCommands": [
       {{- if $p.isDockerProject }}
-      "docker compose restart",
+      "docker compose restart"
       {{- else if $p.restartCommands }}{{- range $j, $cmd := $p.restartCommands }}
       {{- if gt $j 0 }},{{ end }}
       "{{ $cmd }}" {{- end }}
