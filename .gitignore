@@ -44,3 +44,5 @@ ports.json
 projects.json
 
 .DS_Store
+
+!source/its-the-vibe/VibeOps

@@ -19,6 +19,14 @@
       {{- if gt $j 0 }},{{ end }}
       "{{ $cmd }}" {{- end }}
       {{- end }}
+    ],
+    "restartCommands": [
+      {{- if $p.isDockerProject }}
+      "docker compose restart",
+      {{- else if $p.restartCommands }}{{- range $j, $cmd := $p.restartCommands }}
+      {{- if gt $j 0 }},{{ end }}
+      "{{ $cmd }}" {{- end }}
+      {{- end }}
     ]
   },
 {{- end }}
@@ -32,6 +40,9 @@
     "downCommands": [
       "sudo systemctl stop poppit"
     ],
+    "restartCommands": [
+      "sudo systemctl restart poppit"
+    ],
     "targetQueue": "{{.PoppitBuilderListName}}"
   },
   {
@@ -42,6 +53,9 @@
     ],
     "downCommands": [
       "sudo systemctl stop poppit-builder"
+    ],
+    "restartCommands": [
+      "sudo systemctl restart poppit-builder"
     ]
   }
 ]
