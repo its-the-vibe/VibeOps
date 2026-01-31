@@ -4,7 +4,7 @@
   {
     "repo": "{{$.OrgName}}/{{ $p.name }}",
     "branch": "refs/heads/main",
-    "type": "git-webhook",
+    "type": "github-dispatcher",
     "dir": "{{$.BaseDir}}/{{$.OrgName}}/{{ $p.name }}",
     "commands": [
       {{- if $p.isDockerProject }}
