@@ -187,7 +187,7 @@ func restartService(serviceName string, config *utils.TurnItOffAndOnAgainConfig)
 
 	// Check response status
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return fmt.Errorf("received non-success status code: %d", resp.StatusCode)
+		return fmt.Errorf("service %s restart failed with status code: %d", serviceName, resp.StatusCode)
 	}
 
 	fmt.Printf("✓ Restarted service: %s\n", serviceName)

@@ -173,7 +173,7 @@ This command will:
 
 Before running the diff command, you need to:
 
-1. Rename `turn_it_off_and_on_again_config.json.example` to `turn_it_off_and_on_again_config.json`:
+1. Copy `turn_it_off_and_on_again_config.json.example` to `turn_it_off_and_on_again_config.json` and configure it:
 
 ```json
 {
