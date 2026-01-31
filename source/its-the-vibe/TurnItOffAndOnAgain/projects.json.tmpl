@@ -1,0 +1,27 @@
+[
+{{- range $i, $p := .Projects }}
+  {{- if $p.isUpDownProject }}
+  {{- if gt $i 1 }},{{ end }}{{/* Hack to exclude , because .github_private */}}
+  {
+    "repo": "{{$.OrgName}}/{{ $p.name }}",
+    "dir": "{{$.BaseDir}}/{{$.OrgName}}/{{ $p.name }}",
+    "upCommands": [
+      {{- if $p.isDockerProject }}
+      "docker compose up -d"
+      {{- else if $p.upCommands }}{{- range $j, $cmd := $p.upCommands }}
+      {{- if gt $j 0 }},{{ end }}
+      "{{ $cmd }}" {{- end }}
+      {{- end }}
+    ],
+    "downCommands": [
+      {{- if $p.isDockerProject }}
+      "docker compose down"
+      {{- else if $p.downCommands }}{{- range $j, $cmd := $p.downCommands }}
+      {{- if gt $j 0 }},{{ end }}
+      "{{ $cmd }}" {{- end }}
+      {{- end }}
+    ]
+  }
+{{- end }}
+{{- end }}
+]

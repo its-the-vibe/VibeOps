@@ -14,8 +14,11 @@ type Project struct {
 	AllowVibeDeploy     bool     `json:"allowVibeDeploy"`
 	IsDockerProject     bool     `json:"isDockerProject"`
 	BuildCommands       []string `json:"buildCommands,omitempty"`
+	UpCommands          []string `json:"upCommands,omitempty"`
+	DownCommands        []string `json:"downCommands,omitempty"`
 	UseWithSlackCompose bool     `json:"useWithSlackCompose"`
 	UseWithGitHubIssue  bool     `json:"useWithGitHubIssue"`
+	IsUpDownProject     bool     `json:"isUpDownProject"`
 }
 
 // LoadProjects reads and parses the projects.json file, setting defaults
@@ -83,6 +86,7 @@ func AddProjectToProjectsFile(filePath, projectName string) error {
 		IsDockerProject:     true,
 		UseWithSlackCompose: true,
 		UseWithGitHubIssue:  true,
+		IsUpDownProject:     true,
 	}
 	projects = append(projects, newProject)
 

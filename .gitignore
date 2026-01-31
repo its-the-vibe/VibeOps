@@ -33,6 +33,7 @@ go.work.sum
 
 # Build directory for templates
 build/
+prev-build/
 
 # Templating binary
 vibeops
