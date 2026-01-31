@@ -1,9 +1,8 @@
 [
 {{- range $i, $p := .Projects }}
   {{- if $p.isUpDownProject }}
-  {{- if gt $i 1 }},{{ end }}{{/* Hack to exclude , because .github_private */}}
   {
-    "repo": "{{$.OrgName}}/{{ $p.name }}",
+    "repo": "{{ $p.name }}",
     "dir": "{{$.BaseDir}}/{{$.OrgName}}/{{ $p.name }}",
     "upCommands": [
       {{- if $p.isDockerProject }}
@@ -21,7 +20,28 @@
       "{{ $cmd }}" {{- end }}
       {{- end }}
     ]
+  },
+{{- end }}
+{{- end }}
+  {
+    "repo": "Poppit",
+    "dir": "{{$.BaseDir}}/{{$.OrgName}}/Poppit",
+    "upCommands": [
+      "sudo systemctl start poppit"
+    ],
+    "downCommands": [
+      "sudo systemctl stop poppit"
+    ],
+    "targetQueue": "{{.PoppitBuilderListName}}"
+  },
+  {
+    "repo": "poppit-builder",
+    "dir": "{{$.BaseDir}}/{{$.OrgName}}/Poppit",
+    "upCommands": [
+      "sudo systemctl start poppit-builder"
+    ],
+    "downCommands": [
+      "sudo systemctl stop poppit-builder"
+    ]
   }
-{{- end }}
-{{- end }}
 ]
