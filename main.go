@@ -18,6 +18,7 @@ func main() {
 	rootCmd.AddCommand(cmd.NewTemplateCmd())
 	rootCmd.AddCommand(cmd.NewLinkCmd())
 	rootCmd.AddCommand(cmd.NewProjectCmd())
+	rootCmd.AddCommand(cmd.NewDiffCmd())
 
 	// Execute root command
 	if err := rootCmd.Execute(); err != nil {

@@ -151,6 +151,61 @@ Example:
 
 To customize project settings, edit `projects.json` directly. See `projects.json.example` for available options.
 
+### Detecting and Restarting Changed Services
+
+To compare configuration changes between builds and automatically restart affected services:
+
+```bash
+make diff
+```
+
+Or use the CLI directly:
+
+```bash
+./vibeops diff
+```
+
+This command will:
+1. Compare the `prev-build` and `build` directories using `diff -qr`
+2. Extract service names from changed files
+3. Send restart requests to the TurnItOffAndOnAgain service for each unique service
+4. If TurnItOffAndOnAgain itself changed, restart it first with a configurable wait time
+
+Before running the diff command, you need to:
+
+1. Rename `turn_it_off_and_on_again_config.json.example` to `turn_it_off_and_on_again_config.json`:
+
+```json
+{
+  "TurnItOffAndOnAgainUrl": "http://localhost:8080",
+  "RestartWaitSeconds": 5
+}
+```
+
+2. Create a `prev-build` directory with the previous build state:
+
+```bash
+make prev-build
+```
+
+3. Make changes to your templates or configuration, then generate new build:
+
+```bash
+make template
+```
+
+4. Run the diff command to restart changed services:
+
+```bash
+make diff
+```
+
+You can specify a custom config file:
+
+```bash
+./vibeops diff --config /path/to/config.json
+```
+
 ### Other Commands
 
 Build the templating program only:
@@ -172,10 +227,12 @@ View all available commands:
 
 - `source/` - Contains template files (`.tmpl` extension)
 - `build/` - Generated configuration files (created automatically, not in source control)
+- `prev-build/` - Previous build state for comparison (created automatically, not in source control)
 - `values.json` - Values to be applied to templates (gitignored, use `values.json.example` as template)
 - `projects.json` - Project definitions (gitignored, use `projects.json.example` as template)
 - `ports.json` - Optional port mappings to be merged with values (gitignored, use `ports.json.example` as template)
-- `cmd/` - Command implementations (template, link, new-project)
+- `turn_it_off_and_on_again_config.json` - Configuration for the diff command (gitignored, use `turn_it_off_and_on_again_config.json.example` as template)
+- `cmd/` - Command implementations (template, link, new-project, diff)
 - `internal/utils/` - Shared utility functions
 - `main.go` - Main application entry point
 - `Makefile` - Build and run commands

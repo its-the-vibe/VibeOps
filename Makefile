@@ -1,4 +1,4 @@
-.PHONY: build template clean link
+.PHONY: build template clean link diff
 
 # Build the templating program
 build:
@@ -17,6 +17,10 @@ prev-build: build
 # Create symlinks from build directory to BaseDir
 link: build
 	./vibeops link
+
+# Compare prev-build and build directories and restart changed services
+diff: build
+	./vibeops diff
 
 # Clean up generated files
 clean:

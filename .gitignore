@@ -42,5 +42,6 @@ values.json
 values.json.rick
 ports.json
 projects.json
+turn_it_off_and_on_again_config.json
 
 .DS_Store
