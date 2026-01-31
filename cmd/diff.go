@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -55,12 +56,40 @@ restarting other services.`,
 		},
 	}
 
-	cmd.Flags().StringP("config", "c", "turn_it_off_and_on_again_config.json", "Path to TurnItOffAndOnAgain configuration file")
+	cmd.Flags().StringP("config", "c", "config.json", "Path to TurnItOffAndOnAgain configuration file")
 	return cmd
 }
 
 // getDiffChangedServices runs diff command and extracts unique service names
 func getDiffChangedServices() ([]string, error) {
+	// Check if prev-build directory exists
+	if _, err := os.Stat("prev-build"); os.IsNotExist(err) {
+		fmt.Println("prev-build directory does not exist, exiting")
+		return []string{}, nil
+	}
+
+	// Check if build directory exists
+	if _, err := os.Stat("build"); os.IsNotExist(err) {
+		fmt.Println("build directory does not exist, exiting")
+		return []string{}, nil
+	}
+
+	// Check if prev-build directory is empty
+	if isEmpty, err := isDirEmpty("prev-build"); err != nil {
+		return nil, fmt.Errorf("failed to check prev-build directory: %w", err)
+	} else if isEmpty {
+		fmt.Println("prev-build directory is empty, exiting")
+		return []string{}, nil
+	}
+
+	// Check if build directory is empty
+	if isEmpty, err := isDirEmpty("build"); err != nil {
+		return nil, fmt.Errorf("failed to check build directory: %w", err)
+	} else if isEmpty {
+		fmt.Println("build directory is empty, exiting")
+		return []string{}, nil
+	}
+
 	// Run diff -qr prev-build build
 	diffCmd := exec.Command("diff", "-qr", "prev-build", "build")
 	output, err := diffCmd.CombinedOutput()
@@ -85,6 +114,15 @@ func getDiffChangedServices() ([]string, error) {
 
 	// Parse diff output to extract service names
 	return parseServiceNames(string(output))
+}
+
+// isDirEmpty checks if a directory is empty
+func isDirEmpty(path string) (bool, error) {
+	entries, err := os.ReadDir(path)
+	if err != nil {
+		return false, err
+	}
+	return len(entries) == 0, nil
 }
 
 // parseServiceNames extracts unique service names from diff output

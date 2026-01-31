@@ -173,7 +173,7 @@ This command will:
 
 Before running the diff command, you need to:
 
-1. Copy `turn_it_off_and_on_again_config.json.example` to `turn_it_off_and_on_again_config.json` and configure it:
+1. Copy `config.json.example` to `config.json` and configure it:
 
 ```json
 {
@@ -231,7 +231,7 @@ View all available commands:
 - `values.json` - Values to be applied to templates (gitignored, use `values.json.example` as template)
 - `projects.json` - Project definitions (gitignored, use `projects.json.example` as template)
 - `ports.json` - Optional port mappings to be merged with values (gitignored, use `ports.json.example` as template)
-- `turn_it_off_and_on_again_config.json` - Configuration for the diff command (gitignored, use `turn_it_off_and_on_again_config.json.example` as template)
+- `config.json` - Configuration for the diff command (gitignored, use `config.json.example` as template)
 - `cmd/` - Command implementations (template, link, new-project, diff)
 - `internal/utils/` - Shared utility functions
 - `main.go` - Main application entry point
