@@ -42,6 +42,7 @@ values.json
 values.json.rick
 ports.json
 projects.json
+config.json
 
 .DS_Store
 
