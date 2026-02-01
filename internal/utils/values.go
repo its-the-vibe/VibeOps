@@ -10,12 +10,15 @@ import (
 func LoadValues(filename string) (map[string]interface{}, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read file: %w", err)
+		if os.IsNotExist(err) {
+			return nil, fmt.Errorf("file '%s' not found. Please ensure the file exists", filename)
+		}
+		return nil, fmt.Errorf("failed to read file '%s': %w. Please check file permissions", filename, err)
 	}
 
 	var values map[string]interface{}
 	if err := json.Unmarshal(data, &values); err != nil {
-		return nil, fmt.Errorf("failed to parse JSON: %w", err)
+		return nil, FormatJSONError(filename, err)
 	}
 
 	return values, nil
@@ -30,12 +33,12 @@ func LoadPorts(filename string) (map[string]interface{}, error) {
 		if os.IsNotExist(err) {
 			return make(map[string]interface{}), nil
 		}
-		return nil, fmt.Errorf("failed to read file: %w", err)
+		return nil, fmt.Errorf("failed to read file '%s': %w. Please check file permissions", filename, err)
 	}
 
 	var ports map[string]interface{}
 	if err := json.Unmarshal(data, &ports); err != nil {
-		return nil, fmt.Errorf("failed to parse JSON: %w", err)
+		return nil, FormatJSONError(filename, err)
 	}
 
 	return ports, nil

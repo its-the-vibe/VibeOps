@@ -25,12 +25,15 @@ type Project struct {
 func LoadProjects(filename string) ([]Project, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read file: %w", err)
+		if os.IsNotExist(err) {
+			return nil, fmt.Errorf("file '%s' not found. Please ensure the file exists", filename)
+		}
+		return nil, fmt.Errorf("failed to read file '%s': %w. Please check file permissions", filename, err)
 	}
 
 	var projects []Project
 	if err := json.Unmarshal(data, &projects); err != nil {
-		return nil, fmt.Errorf("failed to parse JSON: %w", err)
+		return nil, FormatJSONError(filename, err)
 	}
 
 	return projects, nil
@@ -45,10 +48,10 @@ func LoadProjectsMap(filename string) ([]map[string]interface{}, error) {
 	var projectsList []map[string]interface{}
 	b, err := json.Marshal(projects)
 	if err != nil {
-		return nil, fmt.Errorf("error marshalling projects: %w", err)
+		return nil, fmt.Errorf("error marshalling projects from '%s': %w", filename, err)
 	}
 	if err := json.Unmarshal(b, &projectsList); err != nil {
-		return nil, fmt.Errorf("error unmarshalling projects: %w", err)
+		return nil, fmt.Errorf("error unmarshalling projects from '%s': %w", filename, err)
 	}
 	return projectsList, nil
 }
@@ -63,12 +66,12 @@ func AddProjectToProjectsFile(filePath, projectName string) error {
 			// File doesn't exist, start with empty array
 			projects = []Project{}
 		} else {
-			return fmt.Errorf("failed to read file: %w", err)
+			return fmt.Errorf("failed to read file '%s': %w", filePath, err)
 		}
 	} else {
 		// Parse existing projects
 		if err := json.Unmarshal(data, &projects); err != nil {
-			return fmt.Errorf("failed to parse JSON: %w", err)
+			return FormatJSONError(filePath, err)
 		}
 	}
 
@@ -98,12 +101,12 @@ func AddProjectToProjectsFile(filePath, projectName string) error {
 	// Marshal back to JSON with proper formatting
 	output, err := json.MarshalIndent(projects, "", "  ")
 	if err != nil {
-		return fmt.Errorf("failed to marshal JSON: %w", err)
+		return fmt.Errorf("failed to marshal JSON for '%s': %w", filePath, err)
 	}
 
 	// Write back to file
 	if err := os.WriteFile(filePath, append(output, '\n'), 0644); err != nil {
-		return fmt.Errorf("failed to write file: %w", err)
+		return fmt.Errorf("failed to write file '%s': %w", filePath, err)
 	}
 
 	return nil

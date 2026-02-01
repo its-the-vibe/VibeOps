@@ -19,6 +19,7 @@ func main() {
 	rootCmd.AddCommand(cmd.NewLinkCmd())
 	rootCmd.AddCommand(cmd.NewProjectCmd())
 	rootCmd.AddCommand(cmd.NewDiffCmd())
+	rootCmd.AddCommand(cmd.NewValidateCmd())
 
 	// Execute root command
 	if err := rootCmd.Execute(); err != nil {

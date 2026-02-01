@@ -16,12 +16,15 @@ type TurnItOffAndOnAgainConfig struct {
 func LoadTurnItOffAndOnAgainConfig(filename string) (*TurnItOffAndOnAgainConfig, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read file: %w", err)
+		if os.IsNotExist(err) {
+			return nil, fmt.Errorf("file '%s' not found. Please ensure the file exists", filename)
+		}
+		return nil, fmt.Errorf("failed to read file '%s': %w. Please check file permissions", filename, err)
 	}
 
 	var config TurnItOffAndOnAgainConfig
 	if err := json.Unmarshal(data, &config); err != nil {
-		return nil, fmt.Errorf("failed to parse JSON: %w", err)
+		return nil, FormatJSONError(filename, err)
 	}
 
 	// Set default wait time if not specified
