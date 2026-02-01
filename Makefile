@@ -1,4 +1,4 @@
-.PHONY: build template clean link diff
+.PHONY: build template clean link diff validate-json
 
 # Build the templating program
 build:
@@ -21,6 +21,10 @@ link: build
 # Compare prev-build and build directories and restart changed services
 diff: build
 	./vibeops diff
+
+# Validate all JSON configuration files
+validate-json: build
+	./vibeops validate
 
 # Clean up generated files
 clean:
