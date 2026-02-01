@@ -135,11 +135,24 @@ func processTemplateFile(srcPath, buildDir, relPath string, values map[string]in
 	if err != nil {
 		return "", fmt.Errorf("failed to create output file: %w", err)
 	}
-	defer outputFile.Close()
 
 	// Execute the template and write to output file
 	if err := tmpl.Execute(outputFile, values); err != nil {
 		return "", fmt.Errorf("failed to execute template: %w", err)
+	}
+
+	// Close the file before validation to ensure all data is flushed
+	outputFile.Close()
+
+	// Validate JSON files after generation
+	if strings.HasSuffix(outputPath, ".json") {
+		data, err := os.ReadFile(outputPath)
+		if err != nil {
+			return "", fmt.Errorf("failed to read generated file for validation: %w", err)
+		}
+		if err := utils.ValidateJSON(data, outputPath); err != nil {
+			return "", fmt.Errorf("generated invalid JSON: %w", err)
+		}
 	}
 
 	return outputPath, nil
