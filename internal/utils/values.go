@@ -4,20 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"strings"
 )
-
-// formatJSONError creates a user-friendly error message for JSON parsing failures
-func formatJSONError(filename string, err error) error {
-	errMsg := err.Error()
-	
-	// Extract line and column information if available
-	if strings.Contains(errMsg, "line") || strings.Contains(errMsg, "offset") {
-		return fmt.Errorf("invalid JSON in file '%s': %s\nPlease check the JSON syntax and ensure the file is properly formatted", filename, errMsg)
-	}
-	
-	return fmt.Errorf("failed to parse JSON in file '%s': %w\nPlease check the JSON syntax and ensure the file is properly formatted", filename, err)
-}
 
 // LoadValues reads and parses the values.json file
 func LoadValues(filename string) (map[string]interface{}, error) {
@@ -28,7 +15,7 @@ func LoadValues(filename string) (map[string]interface{}, error) {
 
 	var values map[string]interface{}
 	if err := json.Unmarshal(data, &values); err != nil {
-		return nil, formatJSONError(filename, err)
+		return nil, FormatJSONError(filename, err)
 	}
 
 	return values, nil
@@ -48,7 +35,7 @@ func LoadPorts(filename string) (map[string]interface{}, error) {
 
 	var ports map[string]interface{}
 	if err := json.Unmarshal(data, &ports); err != nil {
-		return nil, formatJSONError(filename, err)
+		return nil, FormatJSONError(filename, err)
 	}
 
 	return ports, nil

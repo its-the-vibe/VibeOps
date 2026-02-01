@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"sort"
-	"strings"
 )
 
 // Project represents a project entry in projects.json
@@ -22,27 +21,6 @@ type Project struct {
 	IsUpDownProject     bool     `json:"isUpDownProject"`
 }
 
-// formatProjectJSONError creates a user-friendly error message for JSON parsing failures
-func formatProjectJSONError(filename string, err error) error {
-	errMsg := err.Error()
-	
-	// Extract line and column information if available
-	if strings.Contains(errMsg, "line") || strings.Contains(errMsg, "offset") {
-		return fmt.Errorf("invalid JSON in file '%s': %s\nPlease check the JSON syntax and ensure the file is properly formatted", filename, errMsg)
-	}
-	
-	return fmt.Errorf("failed to parse JSON in file '%s': %w\nPlease check the JSON syntax and ensure the file is properly formatted", filename, err)
-}
-
-// validateJSON validates that the given data is valid JSON
-func validateJSON(data []byte, filename string) error {
-	var js interface{}
-	if err := json.Unmarshal(data, &js); err != nil {
-		return formatProjectJSONError(filename, err)
-	}
-	return nil
-}
-
 // LoadProjects reads and parses the projects.json file, setting defaults
 func LoadProjects(filename string) ([]Project, error) {
 	data, err := os.ReadFile(filename)
@@ -52,7 +30,7 @@ func LoadProjects(filename string) ([]Project, error) {
 
 	var projects []Project
 	if err := json.Unmarshal(data, &projects); err != nil {
-		return nil, formatProjectJSONError(filename, err)
+		return nil, FormatJSONError(filename, err)
 	}
 
 	return projects, nil
@@ -90,7 +68,7 @@ func AddProjectToProjectsFile(filePath, projectName string) error {
 	} else {
 		// Parse existing projects
 		if err := json.Unmarshal(data, &projects); err != nil {
-			return formatProjectJSONError(filePath, err)
+			return FormatJSONError(filePath, err)
 		}
 	}
 
@@ -123,18 +101,14 @@ func AddProjectToProjectsFile(filePath, projectName string) error {
 		return fmt.Errorf("failed to marshal JSON for '%s': %w", filePath, err)
 	}
 
+	// Validate the JSON before writing to ensure it's well-formed
+	if err := ValidateJSON(output, filePath); err != nil {
+		return fmt.Errorf("generated invalid JSON for '%s': %w", filePath, err)
+	}
+
 	// Write back to file
 	if err := os.WriteFile(filePath, append(output, '\n'), 0644); err != nil {
 		return fmt.Errorf("failed to write file '%s': %w", filePath, err)
-	}
-
-	// Validate the written JSON
-	writtenData, err := os.ReadFile(filePath)
-	if err != nil {
-		return fmt.Errorf("failed to read file '%s' for validation: %w", filePath, err)
-	}
-	if err := validateJSON(writtenData, filePath); err != nil {
-		return fmt.Errorf("generated invalid JSON in '%s': %w", filePath, err)
 	}
 
 	return nil
