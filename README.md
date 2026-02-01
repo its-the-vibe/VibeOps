@@ -206,6 +206,29 @@ You can specify a custom config file:
 ./vibeops diff --config /path/to/config.json
 ```
 
+#### Dry-Run Mode
+
+To preview what services would be restarted without making any changes:
+
+```bash
+./vibeops diff --dry-run
+```
+
+Or using the short flag:
+
+```bash
+./vibeops diff -n
+```
+
+In dry-run mode, the command will:
+- Display which services have changed
+- Show which services would be restarted
+- Not send any restart requests to TurnItOffAndOnAgain
+- Not modify any files or state
+- Clearly indicate that it is a dry-run and no changes were made
+
+This is useful for verifying changes before applying them.
+
 ### Validating JSON Configuration Files
 
 To validate all JSON configuration files and ensure they are properly formatted:

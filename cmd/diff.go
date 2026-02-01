@@ -26,11 +26,16 @@ itself is changed, it will be restarted first with a configurable wait time befo
 restarting other services.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			configFile, _ := cmd.Flags().GetString("config")
+			dryRun, _ := cmd.Flags().GetBool("dry-run")
 
-			// Load configuration
-			config, err := utils.LoadTurnItOffAndOnAgainConfig(configFile)
-			if err != nil {
-				return fmt.Errorf("error loading config: %w", err)
+			// Load configuration only if not in dry-run mode
+			var config *utils.TurnItOffAndOnAgainConfig
+			if !dryRun {
+				var err error
+				config, err = utils.LoadTurnItOffAndOnAgainConfig(configFile)
+				if err != nil {
+					return fmt.Errorf("error loading config: %w", err)
+				}
 			}
 
 			// Run diff command to compare directories
@@ -40,7 +45,21 @@ restarting other services.`,
 			}
 
 			if len(changedServices) == 0 {
-				fmt.Println("No services changed between prev-build and build directories")
+				if dryRun {
+					fmt.Println("[DRY RUN] No services changed between prev-build and build directories")
+				} else {
+					fmt.Println("No services changed between prev-build and build directories")
+				}
+				return nil
+			}
+
+			if dryRun {
+				fmt.Printf("[DRY RUN] Found %d changed service(s): %v\n", len(changedServices), changedServices)
+				fmt.Println("[DRY RUN] The following services would be restarted:")
+				for _, service := range changedServices {
+					fmt.Printf("  - %s\n", service)
+				}
+				fmt.Println("[DRY RUN] No changes were made")
 				return nil
 			}
 
@@ -57,6 +76,7 @@ restarting other services.`,
 	}
 
 	cmd.Flags().StringP("config", "c", "config.json", "Path to TurnItOffAndOnAgain configuration file")
+	cmd.Flags().BoolP("dry-run", "n", false, "Preview changes without restarting any services")
 	return cmd
 }
 
