@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 
@@ -97,11 +96,7 @@ func validateFile(filename string, required bool) error {
 		if err != nil {
 			return fmt.Errorf("failed to read file '%s': %w", filename, err)
 		}
-		var js interface{}
-		if err := json.Unmarshal(data, &js); err != nil {
-			return fmt.Errorf("invalid JSON in file '%s': %w", filename, err)
-		}
-		return nil
+		return utils.ValidateJSON(data, filename)
 	}
 }
 
