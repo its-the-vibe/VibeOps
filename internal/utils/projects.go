@@ -25,7 +25,10 @@ type Project struct {
 func LoadProjects(filename string) ([]Project, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read file '%s': %w\nPlease ensure the file exists and you have read permissions", filename, err)
+		if os.IsNotExist(err) {
+			return nil, fmt.Errorf("file '%s' not found. Please ensure the file exists", filename)
+		}
+		return nil, fmt.Errorf("failed to read file '%s': %w", filename, err)
 	}
 
 	var projects []Project
@@ -99,11 +102,6 @@ func AddProjectToProjectsFile(filePath, projectName string) error {
 	output, err := json.MarshalIndent(projects, "", "  ")
 	if err != nil {
 		return fmt.Errorf("failed to marshal JSON for '%s': %w", filePath, err)
-	}
-
-	// Validate the JSON before writing to ensure it's well-formed
-	if err := ValidateJSON(output, filePath); err != nil {
-		return fmt.Errorf("generated invalid JSON for '%s': %w", filePath, err)
 	}
 
 	// Write back to file
