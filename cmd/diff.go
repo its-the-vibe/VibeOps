@@ -45,11 +45,11 @@ restarting other services.`,
 			}
 
 			if len(changedServices) == 0 {
+				prefix := ""
 				if dryRun {
-					fmt.Println("[DRY RUN] No services changed between prev-build and build directories")
-				} else {
-					fmt.Println("No services changed between prev-build and build directories")
+					prefix = "[DRY RUN] "
 				}
+				fmt.Printf("%sNo services changed between prev-build and build directories\n", prefix)
 				return nil
 			}
 
