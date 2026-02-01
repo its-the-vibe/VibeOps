@@ -16,6 +16,7 @@ type Project struct {
 	BuildCommands       []string `json:"buildCommands,omitempty"`
 	UpCommands          []string `json:"upCommands,omitempty"`
 	DownCommands        []string `json:"downCommands,omitempty"`
+	RestartCommands     []string `json:"restartCommands,omitempty"`
 	UseWithSlackCompose bool     `json:"useWithSlackCompose"`
 	UseWithGitHubIssue  bool     `json:"useWithGitHubIssue"`
 	IsUpDownProject     bool     `json:"isUpDownProject"`
