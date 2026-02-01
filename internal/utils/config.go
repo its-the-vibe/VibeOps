@@ -19,7 +19,7 @@ func LoadTurnItOffAndOnAgainConfig(filename string) (*TurnItOffAndOnAgainConfig,
 		if os.IsNotExist(err) {
 			return nil, fmt.Errorf("file '%s' not found. Please ensure the file exists", filename)
 		}
-		return nil, fmt.Errorf("failed to read file '%s': %w", filename, err)
+		return nil, fmt.Errorf("failed to read file '%s': %w. Please check file permissions", filename, err)
 	}
 
 	var config TurnItOffAndOnAgainConfig

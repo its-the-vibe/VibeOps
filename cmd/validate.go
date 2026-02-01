@@ -29,10 +29,8 @@ func NewValidateCmd() *cobra.Command {
 			if err := validateFile("ports.json", false); err != nil {
 				fmt.Fprintf(os.Stderr, "❌ %v\n", err)
 				hasErrors = true
-			} else if fileExists("ports.json") {
-				fmt.Println("✓ ports.json is valid")
 			} else {
-				fmt.Println("ℹ ports.json not found (optional file)")
+				printOptionalFileStatus("ports.json")
 			}
 
 			// Validate projects.json
@@ -47,10 +45,8 @@ func NewValidateCmd() *cobra.Command {
 			if err := validateFile("config.json", false); err != nil {
 				fmt.Fprintf(os.Stderr, "❌ %v\n", err)
 				hasErrors = true
-			} else if fileExists("config.json") {
-				fmt.Println("✓ config.json is valid")
 			} else {
-				fmt.Println("ℹ config.json not found (optional file)")
+				printOptionalFileStatus("config.json")
 			}
 
 			if hasErrors {
@@ -63,6 +59,15 @@ func NewValidateCmd() *cobra.Command {
 	}
 
 	return cmd
+}
+
+// printOptionalFileStatus prints the status of an optional file
+func printOptionalFileStatus(filename string) {
+	if fileExists(filename) {
+		fmt.Printf("✓ %s is valid\n", filename)
+	} else {
+		fmt.Printf("ℹ %s not found (optional file)\n", filename)
+	}
 }
 
 // validateFile validates a single JSON file

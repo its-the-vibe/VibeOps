@@ -13,7 +13,7 @@ func LoadValues(filename string) (map[string]interface{}, error) {
 		if os.IsNotExist(err) {
 			return nil, fmt.Errorf("file '%s' not found. Please ensure the file exists", filename)
 		}
-		return nil, fmt.Errorf("failed to read file '%s': %w", filename, err)
+		return nil, fmt.Errorf("failed to read file '%s': %w. Please check file permissions", filename, err)
 	}
 
 	var values map[string]interface{}
@@ -33,7 +33,7 @@ func LoadPorts(filename string) (map[string]interface{}, error) {
 		if os.IsNotExist(err) {
 			return make(map[string]interface{}), nil
 		}
-		return nil, fmt.Errorf("failed to read file '%s': %w", filename, err)
+		return nil, fmt.Errorf("failed to read file '%s': %w. Please check file permissions", filename, err)
 	}
 
 	var ports map[string]interface{}
