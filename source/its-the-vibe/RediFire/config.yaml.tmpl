@@ -1,0 +1,15 @@
+# Redis configuration
+redis:
+  host: "host.docker.internal:6379"
+  db: 0
+
+# Firestore configuration
+firestore:
+  projectID: "{{.GcpProjectId}}"
+
+# Mapping of Redis lists to Firestore collections
+mappings:
+  - source: "events-queue"
+    target: "events"
+  - source: "users-queue"
+    target: "users"

@@ -9,5 +9,6 @@
   "SlackBotToken": "example-slack-bot-token",
   "IssueSlackChannelID": "C123456790",
   "OctoSlackChannelID": "C123456790",
-  "TurnItOffAndOnAgainListName": "example-list"
+  "TurnItOffAndOnAgainListName": "example-list",
+  "GcpProjectId": "gcp-project-id"
 }
