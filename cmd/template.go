@@ -155,5 +155,16 @@ func processTemplateFile(srcPath, buildDir, relPath string, values map[string]in
 		}
 	}
 
+	// Validate YAML files after generation
+	if strings.HasSuffix(outputPath, ".yaml") || strings.HasSuffix(outputPath, ".yml") {
+		data, err := os.ReadFile(outputPath)
+		if err != nil {
+			return "", fmt.Errorf("failed to read generated file for validation: %w", err)
+		}
+		if err := utils.ValidateYAML(data, outputPath); err != nil {
+			return "", fmt.Errorf("generated invalid YAML: %w", err)
+		}
+	}
+
 	return outputPath, nil
 }
