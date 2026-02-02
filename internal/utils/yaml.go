@@ -23,8 +23,8 @@ func FormatYAMLError(filename string, err error) error {
 
 // ValidateYAML validates that the given data is valid YAML
 func ValidateYAML(data []byte, filename string) error {
-	var y interface{}
-	if err := yaml.Unmarshal(data, &y); err != nil {
+	var parsed interface{}
+	if err := yaml.Unmarshal(data, &parsed); err != nil {
 		return FormatYAMLError(filename, err)
 	}
 	return nil
