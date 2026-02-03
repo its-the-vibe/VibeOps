@@ -9,7 +9,7 @@ firestore:
 
 # Mapping of Redis lists to Firestore collections
 mappings:
-  - source: "test-events"
-    target: "test-events"
-  - source: "test-users"
-    target: "test-users"
+  - source: "monzo-event-queue"
+    target: "monzo-events"
+  - source: "starling-event-queue"
+    target: "starling-events"
