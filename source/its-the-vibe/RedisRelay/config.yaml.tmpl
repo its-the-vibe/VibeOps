@@ -16,9 +16,10 @@ redis:
 #      - queue-name-2
 #
 mappings:
-  starling-events: starling-event-queue
-  monzo-events: monzo-event-queue
-  one-channel: test-events
-  one-channel-two-lists:
-    - test-events-1
-    - test-events-2
+  starling-events:
+    - starling-event-queue
+    - starling-latest-events
+
+  monzo-events:
+    - monzo-event-queue
+    - monzo-latest-events
