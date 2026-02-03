@@ -1,0 +1,18 @@
+{
+  "services": [
+  {{- $first := true }}
+  {{- range $p := .Projects }}
+    {{- if $p.isDockerProject }}
+      {{- if not $first }},{{ end }}
+      {
+        "name": "{{ $p.name }}",
+        "displayName": "{{ $p.name }}"
+      }
+      {{- $first = false }}
+    {{- end }}
+  {{- end }}
+  ],
+  "dockerStatusUrl": "http://host.docker.internal:{{.ThisIsFinePort}}/ps",
+  "toggleServiceUrl": "http://host.docker.internal:{{.TurnItOffAndOnAgainPort}}/messages",
+  "pollIntervalSeconds": 5
+}
