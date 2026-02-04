@@ -1,0 +1,17 @@
+redis:
+  host: host.docker.internal
+  port: 6379
+  db: 0
+
+# Poll interval for checking and trimming lists
+poll_interval: "30s"
+
+# Lists to trim - each list will be trimmed to its max_size
+# Lists are populated with RPUSH, so trimming removes from the head (oldest items)
+lists:
+  - name: "starling-latest-events"
+    max_size: 100
+  - name: "monzo-latest-events"
+    max_size: 100
+  - name: "poppit-latest-command-output"
+    max_size: 50
