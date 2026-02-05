@@ -9,9 +9,27 @@ poll_interval: "30s"
 # Lists to trim - each list will be trimmed to its max_size
 # Lists are populated with RPUSH, so trimming removes from the head (oldest items)
 lists:
-  - name: "starling-latest-events"
+  - name: starling-latest-events
     max_size: 100
-  - name: "monzo-latest-events"
+  - name: monzo-latest-events
     max_size: 100
-  - name: "poppit-latest-command-output"
+  - name: poppit-latest-command-output
     max_size: 50
+
+  - name: latest-github-webhook-issues
+    max_size: 25
+  - name: latest-github-webhook-pushes
+    max_size: 25
+  - name: latest-github-webhook-pull-requests
+    max_size: 25
+
+  - name: latest-slack-reaction-added
+    max_size: 25
+  - name: latest-slack-reaction-removed
+    max_size: 25
+  - name: latest-slack-view-submissions
+    max_size: 25
+  - name: latest-slack-block-actions
+    max_size: 25
+  - name: latest-slack-message-actions
+    max_size: 25
