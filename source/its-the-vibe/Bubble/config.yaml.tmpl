@@ -1,0 +1,27 @@
+redis:
+  addr: "host.docker.internal:6379"
+  password: ""
+  list_name: "{{.PoppitListName}}"
+
+# NOTE: this will get remapped from docker compose
+server:
+  port: "8080"
+
+commands:
+  - name: "Turn TV on/off"
+    repo: "its-the-vibe/Bubble"
+    branch: "refs/heads/main"
+    type: "bubble-command"
+    dir: "/home/chung"
+    commands:
+      - "git pull origin main"
+      - "./deploy.sh production"
+
+  - name: "Turn on Nookie"
+    repo: "its-the-vibe/Bubble"
+    branch: "refs/heads/main"
+    type: "bubble-command"
+    dir: "/home/chung"
+    commands:
+      - "npm install"
+      - "npm test"
