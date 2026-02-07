@@ -9,19 +9,17 @@ server:
 
 commands:
   - name: "Turn TV on/off"
-    repo: "its-the-vibe/Bubble"
+    repo: "{{.OrgName}}/Bubble"
     branch: "refs/heads/main"
     type: "bubble-command"
-    dir: "/home/chung"
+    dir: "{{.BaseDir}}/{{.OrgName}}/Bubble"
     commands:
-      - "git pull origin main"
-      - "./deploy.sh production"
+      - "curl http://192.168.1.12:5000/cmd?cmd=tv"
 
   - name: "Turn on Nookie"
-    repo: "its-the-vibe/Bubble"
+    repo: "{{.OrgName}}/Bubble"
     branch: "refs/heads/main"
     type: "bubble-command"
-    dir: "/home/chung"
+    dir: "{{.BaseDir}}/{{.OrgName}}/Bubble"
     commands:
-      - "npm install"
-      - "npm test"
+      - "wakeonlan 94:C6:91:1D:CA:27"
