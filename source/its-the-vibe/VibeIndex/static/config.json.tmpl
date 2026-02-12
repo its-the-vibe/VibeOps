@@ -10,13 +10,21 @@
       "name": "ThisIsFine",
       "description": "Simple Self Contained Status Dashboard",
       "url": "http://{{.Hostname}}:{{.ThisIsFinePort}}"
+    },
+    {
+      "name": "RediScan",
+      "description": "A lightweight web UI to inspect and page through Redis lists with automatic JSON pretty-printing",
+      "url": "http://{{.Hostname}}:{{.RediScanPort}}"
+    },
+    {
+      "name": "SwitchBoard",
+      "description": "A webapp for switching off and switching on services",
+      "url": "http://{{.Hostname}}:{{.SwitchBoardPort}}"
+    },
+    {
+      "name": "Bubble",
+      "description": "Web front-end for Poppit",
+      "url": "http://{{.Hostname}}:{{.BubblePort}}"
     }
   ]
 }
-{{/*
-  "rate-my-port": 8000,
-  "ThisIsFinePort": 8001,
-  "RediScanPort": 8002,
-  "SwitchBoardPort": 8003,
-  "BubblePort": 8008,
-*/}}
