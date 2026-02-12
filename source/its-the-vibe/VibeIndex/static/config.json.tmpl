@@ -1,0 +1,22 @@
+{
+  "organizationName": "Its The Vibe",
+  "projects": [
+    {
+      "name": "rate my",
+      "description": "Simple web page to allow submitting ratings of various things",
+      "url": "https://{{.Hostname}}:{{index . "rate-my-port"}}"
+    },
+    {
+      "name": "ThisIsFine",
+      "description": "Simple Self Contained Status Dashboard",
+      "url": "https://{{.Hostname}}:{{.ThisIsFinePort}}"
+    }
+  ]
+}
+{{/*
+  "rate-my-port": 8000,
+  "ThisIsFinePort": 8001,
+  "RediScanPort": 8002,
+  "SwitchBoardPort": 8003,
+  "BubblePort": 8008,
+*/}}
