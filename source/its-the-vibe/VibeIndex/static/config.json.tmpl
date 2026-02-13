@@ -26,5 +26,14 @@
       "description": "Web front-end for Poppit",
       "url": "http://{{.Hostname}}:{{.BubblePort}}"
     }
+  ],
+  "githubRepositories": [
+  {{- range $i, $p := .Projects }}
+    {{- if gt $i 0 }},{{ end }}
+    {
+      "name": "{{ $p.name }}",
+      "url": "https://github.com/{{$.OrgName}}/{{ $p.name}}"
+    }
+  {{- end }}
   ]
 }
