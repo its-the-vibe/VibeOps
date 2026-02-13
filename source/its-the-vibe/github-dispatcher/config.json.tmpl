@@ -8,6 +8,7 @@
     "dir": "{{$.BaseDir}}/{{$.OrgName}}/{{ $p.name }}",
     "commands": [
       {{- if $p.isDockerProject }}
+      "git checkout main",
       "git pull",
       "docker compose build",
       "docker compose down",
