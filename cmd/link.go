@@ -20,7 +20,7 @@ func NewLinkCmd() *cobra.Command {
 			buildDir, _ := cmd.Flags().GetString("build-dir")
 
 			// Load values from values.json
-			values, err := utils.LoadValues("values.json")
+			values, err := utils.LoadValuesFromFile("values.json")
 			if err != nil {
 				return fmt.Errorf("error loading values.json: %w", err)
 			}

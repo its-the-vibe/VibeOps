@@ -6,12 +6,13 @@ import (
 	"os"
 )
 
-// LoadValues reads and parses the values.json file
-func LoadValues(filename string) (map[string]interface{}, error) {
+// LoadValuesFromFile reads and parses the specified file
+func LoadValuesFromFile(filename string) (map[string]interface{}, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return nil, fmt.Errorf("file '%s' not found. Please ensure the file exists", filename)
+			fmt.Println("File does not exist, returning empty values map:", filename)
+			return make(map[string]interface{}), nil
 		}
 		return nil, fmt.Errorf("failed to read file '%s': %w. Please check file permissions", filename, err)
 	}
@@ -24,38 +25,18 @@ func LoadValues(filename string) (map[string]interface{}, error) {
 	return values, nil
 }
 
-// LoadPorts reads and parses the ports.json file
-// Returns an empty map if the file doesn't exist (optional file)
-func LoadPorts(filename string) (map[string]interface{}, error) {
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		// If file doesn't exist, return empty map (ports.json is optional)
-		if os.IsNotExist(err) {
-			return make(map[string]interface{}), nil
-		}
-		return nil, fmt.Errorf("failed to read file '%s': %w. Please check file permissions", filename, err)
-	}
-
-	var ports map[string]interface{}
-	if err := json.Unmarshal(data, &ports); err != nil {
-		return nil, FormatJSONError(filename, err)
-	}
-
-	return ports, nil
-}
-
-// MergeValues merges port values into the main values map
-// Port values will override any existing values with the same key
-func MergeValues(values, ports map[string]interface{}) map[string]interface{} {
+// MergeValues merges two maps
+// Values from the second map will override any existing values with the same key
+func MergeValues(map1, map2 map[string]interface{}) map[string]interface{} {
 	merged := make(map[string]interface{})
 
-	// Copy all values
-	for k, v := range values {
+	// Copy all values from map1
+	for k, v := range map1 {
 		merged[k] = v
 	}
 
-	// Merge in ports (will override if keys conflict)
-	for k, v := range ports {
+	// Merge in map2 (will override if keys conflict)
+	for k, v := range map2 {
 		merged[k] = v
 	}
 
