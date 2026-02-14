@@ -84,10 +84,10 @@ func validateFile(filename string, required bool) error {
 	// Read and validate the file based on its type
 	switch filename {
 	case "values.json":
-		_, err := utils.LoadValues(filename)
+		_, err := utils.LoadValuesFromFile(filename)
 		return err
 	case "ports.json":
-		_, err := utils.LoadPorts(filename)
+		_, err := utils.LoadValuesFromFile(filename)
 		return err
 	case "projects.json":
 		_, err := utils.LoadProjects(filename)
