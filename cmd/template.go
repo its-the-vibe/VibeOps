@@ -47,7 +47,7 @@ func NewTemplateCmd() *cobra.Command {
 			// Load bootstrap config (optional)
 			bootstrapConfig, err := utils.LoadBootstrapConfig("bootstrap.json")
 			if err != nil {
-				fmt.Println("Bootstrap config not found, skipping GCP secret loading")
+				// Bootstrap config is optional, silently skip if not found
 			} else if bootstrapConfig.GCPSecretName != "" {
 				// Load GCP secret if configured
 				ctx := context.Background()

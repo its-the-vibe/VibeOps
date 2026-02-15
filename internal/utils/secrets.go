@@ -45,7 +45,7 @@ func LoadGCPSecret(ctx context.Context, secretName string) (map[string]interface
 	// Create the Secret Manager client
 	client, err := secretmanager.NewClient(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create Secret Manager client: %w", err)
+		return nil, fmt.Errorf("failed to create Secret Manager client (verify GCP credentials are configured): %w", err)
 	}
 	defer client.Close()
 
