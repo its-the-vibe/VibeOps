@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"io/fs"
 	"os"
@@ -42,6 +43,22 @@ func NewTemplateCmd() *cobra.Command {
 
 			// Merge ports into values
 			mergedValues := utils.MergeValues(values, ports)
+
+			// Load bootstrap config (optional)
+			bootstrapConfig, err := utils.LoadBootstrapConfig("bootstrap.json")
+			if err != nil {
+				fmt.Println("Bootstrap config not found, skipping GCP secret loading")
+			} else if bootstrapConfig.GCPSecretName != "" {
+				// Load GCP secret if configured
+				ctx := context.Background()
+				gcpSecrets, err := utils.LoadGCPSecret(ctx, bootstrapConfig.GCPSecretName)
+				if err != nil {
+					return fmt.Errorf("error loading GCP secret: %w", err)
+				}
+				fmt.Printf("Loaded %d values from GCP Secret Manager\n", len(gcpSecrets))
+				// Merge GCP secrets into values (GCP secrets override local values)
+				mergedValues = utils.MergeValues(mergedValues, gcpSecrets)
+			}
 
 			// Process templates
 			if err := processTemplates("source", buildDir, mergedValues); err != nil {

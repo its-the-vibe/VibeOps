@@ -43,6 +43,7 @@ values.json.rick
 ports.json
 projects.json
 config.json
+bootstrap.json
 
 .DS_Store
 
