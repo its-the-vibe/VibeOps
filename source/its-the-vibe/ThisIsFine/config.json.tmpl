@@ -1,11 +1,16 @@
 {
   "port": {{.ThisIsFinePort}},
-  "services": [
+  "dockerServices": [
   {{- $first := true }}
   {{- range $i, $p := .Projects }}
     {{- if $p.isDockerProject }}{{if not $first}},{{end}}
     "{{$.OrgName}}/{{$p.name}}"
     {{- $first = false }}{{end}}
   {{- end }}
+  ],
+  "systemdServices": [
+    "poppit",
+    "poppit-builder",
+    "thisisfine"
   ]
 }
