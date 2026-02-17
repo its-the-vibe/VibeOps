@@ -57,5 +57,18 @@
     "restartCommands": [
       "sudo systemctl restart poppit-builder"
     ]
+  },
+  {
+    "repo": "ttyd",
+    "dir": "{{$.BaseDir}}/{{$.OrgName}}",
+    "upCommands": [
+      "sudo systemctl start ttyd"
+    ],
+    "downCommands": [
+      "sudo systemctl stop ttyd"
+    ],
+    "restartCommands": [
+      "sudo systemctl restart ttyd"
+    ]
   }
 ]
