@@ -2,7 +2,7 @@
 {{- range $i, $p := .Projects }}
   {{- if $p.isUpDownProject }}
   {
-    "repo": "{{ $p.name }}",
+    "service": "{{ $p.name }}",
     "dir": "{{$.BaseDir}}/{{$.OrgName}}/{{ $p.name }}",
     "upCommands": [
       {{- if $p.isDockerProject }}
@@ -32,7 +32,7 @@
 {{- end }}
 {{- end }}
   {
-    "repo": "Poppit",
+    "service": "Poppit",
     "dir": "{{$.BaseDir}}/{{$.OrgName}}/Poppit",
     "upCommands": [
       "sudo systemctl start poppit"
@@ -46,7 +46,7 @@
     "targetQueue": "{{.PoppitBuilderListName}}"
   },
   {
-    "repo": "poppit-builder",
+    "service": "poppit-builder",
     "dir": "{{$.BaseDir}}/{{$.OrgName}}/Poppit",
     "upCommands": [
       "sudo systemctl start poppit-builder"
@@ -59,7 +59,7 @@
     ]
   },
   {
-    "repo": "ttyd",
+    "service": "ttyd",
     "dir": "{{$.BaseDir}}/{{$.OrgName}}",
     "upCommands": [
       "sudo systemctl start ttyd"
