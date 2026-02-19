@@ -1,0 +1,17 @@
+# GCP project ID
+project_id: "{{.GcpProjectId}}"
+
+# Path to the GCP service account credentials JSON file.
+# Leave empty to use Application Default Credentials (ADC).
+#credentials_file: "/path/to/credentials.json"
+
+# Number of documents to preload per page
+batch_size: 25
+
+# HTTP port the server will listen on
+port: 8080
+
+# List of Firestore collection names to expose
+collections:
+  - monzo-events
+  - starling-events
