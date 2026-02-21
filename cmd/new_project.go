@@ -8,6 +8,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// getOrgName loads OrgName from values.json, falling back to the provided default.
+func getOrgName(fallback string) string {
+	values, err := utils.LoadValuesFromFile("values.json")
+	if err != nil {
+		return fallback
+	}
+	if orgName, ok := values["OrgName"].(string); ok && orgName != "" {
+		return orgName
+	}
+	return fallback
+}
+
 // NewProjectCmd creates the new-project command
 func NewProjectCmd() *cobra.Command {
 	var noEnv bool
@@ -29,8 +41,11 @@ will be automatically generated from projects.json when you run 'vibeops templat
 			}
 			fmt.Printf("✓ Added project to projects.json\n")
 
+			// Resolve org name from values.json
+			orgName := getOrgName("__.OrgName__")
+
 			// Create project directory and .env.tmpl file
-			if err := createProjectDirAndEnv(projectName, noEnv); err != nil {
+			if err := createProjectDirAndEnv(orgName, projectName, noEnv); err != nil {
 				return err
 			}
 
@@ -45,9 +60,9 @@ will be automatically generated from projects.json when you run 'vibeops templat
 	return cmd
 }
 
-// createProjectDirAndEnv creates source/its-the-vibe/<projectName> and optionally an empty .env file, idempotently
-func createProjectDirAndEnv(projectName string, noEnv bool) error {
-	projectDir := fmt.Sprintf("source/its-the-vibe/%s", projectName)
+// createProjectDirAndEnv creates source/<orgName>/<projectName> and optionally an empty .env file, idempotently
+func createProjectDirAndEnv(orgName, projectName string, noEnv bool) error {
+	projectDir := fmt.Sprintf("source/%s/%s", orgName, projectName)
 	envFile := fmt.Sprintf("%s/.env.tmpl", projectDir)
 
 	// Create directory if it doesn't exist

@@ -165,13 +165,13 @@ This command will:
    - `isDockerProject`: true (with default Docker commands)
    - `useWithSlackCompose`: true
    - `useWithGitHubIssue`: true
-2. Create a project directory at `source/its-the-vibe/[project-name]`
+2. Create a project directory at `source/__.OrgName__/[project-name]` (using `OrgName` from `values.json`)
 3. Create an empty `.env.tmpl` file in the project directory
 
 After adding a project, run `./vibeops template` to generate all configuration files. The following files will be automatically generated from `projects.json`:
-- `build/its-the-vibe/SlackCompose/projects.json`
-- `build/its-the-vibe/github-dispatcher/config.json`
-- `build/its-the-vibe/OctoCatalog/catalog.json`
+- `build/[OrgName]/SlackCompose/projects.json`
+- `build/[OrgName]/github-dispatcher/config.json`
+- `build/[OrgName]/OctoCatalog/catalog.json`
 
 Example:
 ```bash
