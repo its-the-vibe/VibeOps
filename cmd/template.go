@@ -74,6 +74,18 @@ func NewTemplateCmd() *cobra.Command {
 	return cmd
 }
 
+// expandPathVars replaces __.Key__ placeholders in a path with values from the values map.
+// For example, __.OrgName__ is replaced with the value of values["OrgName"].
+func expandPathVars(path string, values map[string]interface{}) string {
+	for key, val := range values {
+		placeholder := "__." + key + "__"
+		if str, ok := val.(string); ok {
+			path = strings.ReplaceAll(path, placeholder, str)
+		}
+	}
+	return path
+}
+
 // processTemplates walks through the source directory and processes .tmpl files
 func processTemplates(sourceDir, buildDir string, values map[string]interface{}) error {
 	// Create build directory if it doesn't exist
@@ -98,9 +110,12 @@ func processTemplates(sourceDir, buildDir string, values map[string]interface{})
 			return fmt.Errorf("failed to get relative path: %w", err)
 		}
 
+		// Expand __.Key__ placeholders in the relative path
+		expandedRelPath := expandPathVars(relPath, values)
+
 		// If it's a directory, create it in the build folder
 		if d.IsDir() {
-			buildPath := filepath.Join(buildDir, relPath)
+			buildPath := filepath.Join(buildDir, expandedRelPath)
 			if err := os.MkdirAll(buildPath, 0755); err != nil {
 				return fmt.Errorf("failed to create directory %s: %w", buildPath, err)
 			}
@@ -114,7 +129,7 @@ func processTemplates(sourceDir, buildDir string, values map[string]interface{})
 
 		// Process the template file
 		var outputFile string
-		if outputFile, err = processTemplateFile(path, buildDir, relPath, values); err != nil {
+		if outputFile, err = processTemplateFile(path, buildDir, expandedRelPath, values); err != nil {
 			return fmt.Errorf("failed to process template %s: %w", path, err)
 		}
 
