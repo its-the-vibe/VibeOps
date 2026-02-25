@@ -8,7 +8,7 @@ server:
 
 bigquery:
   # GCP project ID that owns the BigQuery dataset.
-  project_id: "your-gcp-project-id"
+  project_id: "{{.GcpProjectId}}"
 
   # BigQuery dataset that contains the journeys table.
-  dataset: "your_dataset"
+  dataset: "oyster"
