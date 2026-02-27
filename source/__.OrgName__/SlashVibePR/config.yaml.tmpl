@@ -1,0 +1,26 @@
+# SlashVibePR Configuration File
+# Secrets (REDIS_PASSWORD, SLACK_BOT_TOKEN) are read from environment variables
+# and must NOT be placed here.
+
+# Redis — connection to the external Redis server
+redis:
+  addr: host.docker.internal:6379
+
+# Redis pub/sub channels the service subscribes to
+channels:
+  slash_commands: slack-commands
+  view_submissions: slack-relay-view-submission
+  poppit_output: poppit:command-output
+
+# Redis lists the service publishes to
+lists:
+  poppit_commands: {{.PoppitListName}}
+  slackliner_messages: slack_messages
+
+# Slack
+slack:
+  channel_id: {{.PRSlackChannelID}}
+
+# Logging: DEBUG | INFO | WARN | ERROR
+logging:
+  level: INFO
