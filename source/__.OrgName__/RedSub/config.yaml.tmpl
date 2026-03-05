@@ -1,0 +1,10 @@
+redis:
+  host: "host.docker.internal"
+  port: 6379
+
+gcp:
+  project_id: "{{.GcpProjectId}}"
+
+queues:
+  - redis_list: "dummy-redis-list"
+    pubsub_topic: "dummy-topic"
