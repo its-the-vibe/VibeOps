@@ -176,10 +176,10 @@ func processTemplateFile(srcPath, buildDir, relPath string, values map[string]in
 	// Close the file before validation to ensure all data is flushed
 	outputFile.Close()
 
-	// Set .env files to read-only for owner (0400) to protect sensitive data
-	if strings.HasSuffix(outputPath, ".env") {
+	// Set .env and .secret files to read-only for owner (0400) to protect sensitive data
+	if strings.HasSuffix(outputPath, ".env") || strings.HasSuffix(outputPath, ".secret") {
 		if err := os.Chmod(outputPath, 0400); err != nil {
-			return "", fmt.Errorf("failed to set permissions on .env file: %w", err)
+			return "", fmt.Errorf("failed to set permissions on sensitive file: %w", err)
 		}
 	}
 
