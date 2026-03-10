@@ -131,6 +131,12 @@ You can specify a custom build directory:
 ./vibeops template --build-dir /path/to/custom/build
 ```
 
+You can specify a custom source directory:
+
+```bash
+./vibeops template --source-dir my_templates
+```
+
 ### Creating Symlinks
 
 To create symlinks from the build directory to the `BaseDir` specified in `values.json`:

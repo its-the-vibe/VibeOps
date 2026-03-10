@@ -21,6 +21,7 @@ func NewTemplateCmd() *cobra.Command {
 		Long:  `Process all .tmpl files in the source folder and generate output files in the build folder.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			buildDir, _ := cmd.Flags().GetString("build-dir")
+			sourceDir, _ := cmd.Flags().GetString("source-dir")
 
 			// Load values from values.json
 			values, err := utils.LoadValuesFromFile("values.json")
@@ -61,7 +62,7 @@ func NewTemplateCmd() *cobra.Command {
 			}
 
 			// Process templates
-			if err := processTemplates("source", buildDir, mergedValues); err != nil {
+			if err := processTemplates(sourceDir, buildDir, mergedValues); err != nil {
 				return fmt.Errorf("error processing templates: %w", err)
 			}
 
@@ -71,6 +72,7 @@ func NewTemplateCmd() *cobra.Command {
 	}
 
 	cmd.Flags().StringP("build-dir", "b", "build", "Output build directory")
+	cmd.Flags().StringP("source-dir", "s", "source", "Source directory containing template files")
 	return cmd
 }
 
