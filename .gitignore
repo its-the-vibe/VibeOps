@@ -48,3 +48,5 @@ bootstrap.json
 .DS_Store
 
 !source/its-the-vibe/VibeOps
+
+source-private

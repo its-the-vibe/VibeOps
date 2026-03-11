@@ -8,11 +8,17 @@ build:
 template: build
 	rm -rf build
 	./vibeops template
+	@if [ -d source-private ]; then \
+		./vibeops template -s source-private --follow-symlinks; \
+	fi
 
 # Run the templating process into prev-build
 prev-build: build
 	rm -rf prev-build
 	./vibeops template -b prev-build
+	@if [ -d source-private ]; then \
+		./vibeops template -s source-private --follow-symlinks -b prev-build; \
+	fi
 
 # Create symlinks from build directory to BaseDir
 link: build
