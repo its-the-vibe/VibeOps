@@ -137,6 +137,14 @@ You can specify a custom source directory:
 ./vibeops template --source-dir my_templates
 ```
 
+To follow symlinks in the source directory during template processing:
+
+```bash
+./vibeops template --follow-symlinks
+```
+
+When `--follow-symlinks` is set, the command will traverse into directories pointed to by symlinks and process any `.tmpl` files found there. Symlink loops are detected and skipped automatically to prevent infinite recursion. By default, symlinks are not followed.
+
 ### Creating Symlinks
 
 To create symlinks from the build directory to the `BaseDir` specified in `values.json`:

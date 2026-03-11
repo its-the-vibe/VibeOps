@@ -13,6 +13,69 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// walkDirFollowSymlinks walks the directory tree rooted at root, calling fn for each file
+// or directory in the tree, following symlinks. It detects symlink loops using a set of
+// visited real paths to prevent infinite recursion.
+func walkDirFollowSymlinks(root string, fn fs.WalkDirFunc) error {
+	visited := make(map[string]bool)
+	return walkDirFollowSymlinksRecursive(root, root, visited, fn)
+}
+
+func walkDirFollowSymlinksRecursive(root, path string, visited map[string]bool, fn fs.WalkDirFunc) error {
+	// Resolve the real path to detect loops; EvalSymlinks follows all symlinks.
+	realPath, err := filepath.EvalSymlinks(path)
+	if err != nil {
+		info, statErr := os.Lstat(path)
+		if statErr != nil {
+			return fn(path, nil, err)
+		}
+		return fn(path, fs.FileInfoToDirEntry(info), err)
+	}
+
+	// Use os.Stat(realPath) directly — this avoids a race between Lstat and Stat
+	// and gives us the resolved target's info in a single call.
+	realInfo, err := os.Stat(realPath)
+	if err != nil {
+		return fn(path, nil, err)
+	}
+
+	if realInfo.IsDir() {
+		if visited[realPath] {
+			// Symlink loop detected — skip silently
+			return nil
+		}
+		visited[realPath] = true
+		// Report the path as seen by the caller (preserving the symlink path),
+		// but use realInfo so IsDir() returns true.
+		if err := fn(path, fs.FileInfoToDirEntry(realInfo), nil); err != nil {
+			if err == filepath.SkipDir {
+				return nil
+			}
+			return err
+		}
+		// Read directory entries from realPath to get the actual contents.
+		// Child paths are joined with path (not realPath) to keep them consistent
+		// with the caller's sourceDir for correct relative-path resolution.
+		entries, err := os.ReadDir(realPath)
+		if err != nil {
+			return fn(path, fs.FileInfoToDirEntry(realInfo), err)
+		}
+		for _, entry := range entries {
+			childPath := filepath.Join(path, entry.Name())
+			if err := walkDirFollowSymlinksRecursive(root, childPath, visited, fn); err != nil {
+				if err == filepath.SkipDir {
+					continue
+				}
+				return err
+			}
+		}
+		return nil
+	}
+
+	// Regular file (or symlink to a file) — call fn with the resolved info.
+	return fn(path, fs.FileInfoToDirEntry(realInfo), nil)
+}
+
 // NewTemplateCmd creates the template command
 func NewTemplateCmd() *cobra.Command {
 	cmd := &cobra.Command{
@@ -22,6 +85,7 @@ func NewTemplateCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			buildDir, _ := cmd.Flags().GetString("build-dir")
 			sourceDir, _ := cmd.Flags().GetString("source-dir")
+			followSymlinks, _ := cmd.Flags().GetBool("follow-symlinks")
 
 			// Load values from values.json
 			values, err := utils.LoadValuesFromFile("values.json")
@@ -62,7 +126,7 @@ func NewTemplateCmd() *cobra.Command {
 			}
 
 			// Process templates
-			if err := processTemplates(sourceDir, buildDir, mergedValues); err != nil {
+			if err := processTemplates(sourceDir, buildDir, mergedValues, followSymlinks); err != nil {
 				return fmt.Errorf("error processing templates: %w", err)
 			}
 
@@ -73,6 +137,7 @@ func NewTemplateCmd() *cobra.Command {
 
 	cmd.Flags().StringP("build-dir", "b", "build", "Output build directory")
 	cmd.Flags().StringP("source-dir", "s", "source", "Source directory containing template files")
+	cmd.Flags().Bool("follow-symlinks", false, "Follow symlinks in the source directory when processing templates")
 	return cmd
 }
 
@@ -89,14 +154,13 @@ func expandPathVars(path string, values map[string]interface{}) string {
 }
 
 // processTemplates walks through the source directory and processes .tmpl files
-func processTemplates(sourceDir, buildDir string, values map[string]interface{}) error {
+func processTemplates(sourceDir, buildDir string, values map[string]interface{}, followSymlinks bool) error {
 	// Create build directory if it doesn't exist
 	if err := os.MkdirAll(buildDir, 0755); err != nil {
 		return fmt.Errorf("failed to create build directory: %w", err)
 	}
 
-	// Walk through the source directory
-	return filepath.WalkDir(sourceDir, func(path string, d fs.DirEntry, err error) error {
+	walkFn := func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -137,7 +201,13 @@ func processTemplates(sourceDir, buildDir string, values map[string]interface{})
 
 		fmt.Printf("Processed: %s\n", outputFile)
 		return nil
-	})
+	}
+
+	// Walk through the source directory, optionally following symlinks
+	if followSymlinks {
+		return walkDirFollowSymlinks(sourceDir, walkFn)
+	}
+	return filepath.WalkDir(sourceDir, walkFn)
 }
 
 // processTemplateFile reads a template file, applies values, and writes the output
