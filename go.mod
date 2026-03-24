@@ -1,6 +1,6 @@
 module github.com/its-the-vibe/VibeOps
 
-go 1.26.0
+go 1.26.1
 
 require (
 	cloud.google.com/go/secretmanager v1.16.0
