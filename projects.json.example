@@ -4,7 +4,13 @@
     "allowVibeDeploy": true,
     "isDockerProject": true,
     "useWithSlackCompose": true,
-    "useWithGitHubIssue": true
+    "useWithGitHubIssue": true,
+    "isUpDownProject": true,
+    "vibeIndex": {
+      "name": "ExampleProject",
+      "description": "This is an example project",
+      "url": "https://example.com"
+    }
   },
   {
     "name": "AnotherProject",
