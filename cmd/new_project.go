@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/its-the-vibe/VibeOps/internal/utils"
 	"github.com/spf13/cobra"
@@ -11,6 +12,7 @@ import (
 // NewProjectCmd creates the new-project command
 func NewProjectCmd() *cobra.Command {
 	var noEnv bool
+	var basedir string
 
 	cmd := &cobra.Command{
 		Use:   "new-project [project-name]",
@@ -30,7 +32,7 @@ will be automatically generated from projects.json when you run 'vibeops templat
 			fmt.Printf("✓ Added project to projects.json\n")
 
 			// Create project directory and .env.tmpl file
-			if err := createProjectDirAndEnv(projectName, noEnv); err != nil {
+			if err := createProjectDirAndEnv(projectName, noEnv, basedir); err != nil {
 				return err
 			}
 
@@ -41,13 +43,20 @@ will be automatically generated from projects.json when you run 'vibeops templat
 	}
 
 	cmd.Flags().BoolVar(&noEnv, "no-env", false, "Skip creation of the sample .env.tmpl file")
+	cmd.Flags().StringVar(&basedir, "basedir", "", "Base directory in which to create the project folder (e.g. /path/to/base)")
 
 	return cmd
 }
 
-// createProjectDirAndEnv creates source/__.OrgName__/<projectName> and optionally an empty .env file, idempotently
-func createProjectDirAndEnv(projectName string, noEnv bool) error {
-	projectDir := fmt.Sprintf("source/__.OrgName__/%s", projectName)
+// createProjectDirAndEnv creates source/__.OrgName__/<projectName> and optionally an empty .env file, idempotently.
+// When basedir is non-empty the directory is created at <basedir>/source/__.OrgName__/<projectName>.
+func createProjectDirAndEnv(projectName string, noEnv bool, basedir string) error {
+	var projectDir string
+	if basedir != "" {
+		projectDir = filepath.Join(basedir, "source", "__.OrgName__", projectName)
+	} else {
+		projectDir = filepath.Join("source", "__.OrgName__", projectName)
+	}
 	envFile := fmt.Sprintf("%s/.env.tmpl", projectDir)
 
 	// Create directory if it doesn't exist
