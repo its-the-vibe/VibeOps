@@ -12,7 +12,7 @@ import (
 type VibeIndex struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	URL         string `json:"url"`
+	PortKey     string `json:"portKey"` // key to look up the port in ports.json
 }
 
 // Project represents a project entry in projects.json

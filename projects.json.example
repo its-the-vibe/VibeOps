@@ -9,7 +9,7 @@
     "vibeIndex": {
       "name": "ExampleProject",
       "description": "This is an example project",
-      "url": "https://example.com"
+      "portKey": "ExampleProjectPort"
     }
   },
   {
