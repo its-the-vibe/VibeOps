@@ -8,18 +8,26 @@ import (
 	"sort"
 )
 
+// VibeIndex represents optional metadata for a project used in templating and automation
+type VibeIndex struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	URL         string `json:"url"`
+}
+
 // Project represents a project entry in projects.json
 type Project struct {
-	Name                string   `json:"name"`
-	AllowVibeDeploy     bool     `json:"allowVibeDeploy"`
-	IsDockerProject     bool     `json:"isDockerProject"`
-	BuildCommands       []string `json:"buildCommands,omitempty"`
-	UpCommands          []string `json:"upCommands,omitempty"`
-	DownCommands        []string `json:"downCommands,omitempty"`
-	RestartCommands     []string `json:"restartCommands,omitempty"`
-	UseWithSlackCompose bool     `json:"useWithSlackCompose"`
-	UseWithGitHubIssue  bool     `json:"useWithGitHubIssue"`
-	IsUpDownProject     bool     `json:"isUpDownProject"`
+	Name                string     `json:"name"`
+	AllowVibeDeploy     bool       `json:"allowVibeDeploy"`
+	IsDockerProject     bool       `json:"isDockerProject"`
+	BuildCommands       []string   `json:"buildCommands,omitempty"`
+	UpCommands          []string   `json:"upCommands,omitempty"`
+	DownCommands        []string   `json:"downCommands,omitempty"`
+	RestartCommands     []string   `json:"restartCommands,omitempty"`
+	UseWithSlackCompose bool       `json:"useWithSlackCompose"`
+	UseWithGitHubIssue  bool       `json:"useWithGitHubIssue"`
+	IsUpDownProject     bool       `json:"isUpDownProject"`
+	VibeIndex           *VibeIndex `json:"vibeIndex,omitempty"`
 }
 
 // LoadProjects reads and parses the projects.json file, setting defaults
