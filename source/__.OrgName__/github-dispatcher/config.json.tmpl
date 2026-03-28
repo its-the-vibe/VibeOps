@@ -7,15 +7,15 @@
     "type": "github-dispatcher",
     "dir": "{{$.BaseDir}}/{{$.OrgName}}/{{ $p.name }}",
     "commands": [
-      {{- if $p.isDockerProject }}
+      {{- if $p.buildCommands }}{{- range $j, $cmd := $p.buildCommands }}
+      {{- if gt $j 0 }},{{ end }}
+      "{{ $cmd }}" {{- end }}
+      {{- else if $p.isDockerProject }}
       "git checkout main",
       "git pull",
       "docker compose build",
       "docker compose down",
       "docker compose up -d"
-      {{- else if $p.buildCommands }}{{- range $j, $cmd := $p.buildCommands }}
-      {{- if gt $j 0 }},{{ end }}
-      "{{ $cmd }}" {{- end }}
       {{- end }}
     ]
   }
