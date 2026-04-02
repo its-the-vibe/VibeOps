@@ -43,20 +43,14 @@ will be automatically generated from projects.json when you run 'vibeops templat
 	}
 
 	cmd.Flags().BoolVar(&noEnv, "no-env", false, "Skip creation of the sample .env.tmpl file")
-	cmd.Flags().StringVar(&basedir, "basedir", "", "Base directory in which to create the project folder (e.g. /path/to/base)")
+	cmd.Flags().StringVar(&basedir, "basedir", "source", "Base directory in which to create the project folder (e.g. /path/to/base)")
 
 	return cmd
 }
 
-// createProjectDirAndEnv creates source/__.OrgName__/<projectName> and optionally an empty .env file, idempotently.
-// When basedir is non-empty the directory is created at <basedir>/source/__.OrgName__/<projectName>.
+// createProjectDirAndEnv creates <basedir>/__.OrgName__/<projectName> and optionally an empty .env file, idempotently.
 func createProjectDirAndEnv(projectName string, noEnv bool, basedir string) error {
-	var projectDir string
-	if basedir != "" {
-		projectDir = filepath.Join(basedir, "source", "__.OrgName__", projectName)
-	} else {
-		projectDir = filepath.Join("source", "__.OrgName__", projectName)
-	}
+	var projectDir = filepath.Join(basedir, "__.OrgName__", projectName)
 	envFile := fmt.Sprintf("%s/.env.tmpl", projectDir)
 
 	// Create directory if it doesn't exist

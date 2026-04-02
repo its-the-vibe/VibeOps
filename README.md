@@ -187,7 +187,7 @@ After adding a project, run `./vibeops template` to generate all configuration f
 - `build/[OrgName]/github-dispatcher/config.json`
 - `build/[OrgName]/OctoCatalog/catalog.json`
 
-You can optionally specify a base directory with `--basedir`. When provided, the project folder will be created at `<basedir>/source/__.OrgName__/[project-name]` instead of the default `source/__.OrgName__/[project-name]`:
+You can optionally specify a base directory with `--basedir` (defaults to `source`). The project folder will be created at `<basedir>/__.OrgName__/[project-name]`
 
 ```bash
 ./vibeops new-project MyNewService --basedir /path/to/base
