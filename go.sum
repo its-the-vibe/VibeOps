@@ -22,6 +22,8 @@ cloud.google.com/go/secretmanager v1.17.0 h1:rji2m9dikfOxUvYxgJ5XpSvDtwqjouqKFAP
 cloud.google.com/go/secretmanager v1.17.0/go.mod h1:ojzpR7KA2il9qcmBYaysgHsclj8nMcCL/Hc+WYxUsGA=
 cloud.google.com/go/secretmanager v1.18.0 h1:VA/ynUUapUF3+xrm0R1dMx8i21p2jfRAWFpokYPncKU=
 cloud.google.com/go/secretmanager v1.18.0/go.mod h1:9OmSuOeiiUicANglrbdKWSnT3gYkRcXuUQDk7dDW0zU=
+cloud.google.com/go/secretmanager v1.19.0 h1:dm9BK06xl+hrxp2unT2psjZeypPj5c6uPiABb6fmicE=
+cloud.google.com/go/secretmanager v1.19.0/go.mod h1:9OmSuOeiiUicANglrbdKWSnT3gYkRcXuUQDk7dDW0zU=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
