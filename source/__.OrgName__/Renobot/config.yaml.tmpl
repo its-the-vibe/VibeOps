@@ -21,3 +21,21 @@ redis:
 
   # Key of the SlackLiner message queue list.
   list_key: "{{.SlackLinerList}}"
+
+poppit:
+  # Redis list that Poppit reads command payloads from (BLPOP).
+  # Must match POPPIT_SERVICE_REDIS_LIST_NAME in your Poppit deployment.
+  input_list: "{{.PoppitListName}}"
+
+  # Redis pub/sub channel that Poppit publishes command output to.
+  # Must match POPPIT_SERVICE_COMMAND_OUTPUT_CHANNEL in your Poppit deployment.
+  output_channel: "{{.PoppitCommandOutputChannel}}"
+
+  # GitHub repository identifier included in Poppit payloads.
+  repo: "{{.OrgName}}/Renobot"
+
+  # Git branch reference included in Poppit payloads.
+  branch: "refs/heads/main"
+
+  # Working directory Poppit uses when executing revamp commands.
+  base_dir: "{{.BaseDir}}/Renobot"
