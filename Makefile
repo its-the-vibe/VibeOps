@@ -4,6 +4,10 @@
 build:
 	go build -o vibeops main.go
 
+# Run tests
+test:
+	go test -v ./...
+
 # Run the templating process
 template: build
 	rm -rf build
