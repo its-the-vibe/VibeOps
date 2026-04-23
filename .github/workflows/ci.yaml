@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    name: Build, Test & Validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build
+        run: make build
+
+      - name: Run unit tests
+        run: go test -v ./...
+
+      - name: Create test fixture files
+        run: |
+          cp values.json.example values.json
+          cp projects.json.example projects.json
+
+      - name: Validate JSON configuration files
+        run: make validate-json
+
+      - name: Process templates
+        run: make template
+
+      - name: Clean up
+        run: make clean

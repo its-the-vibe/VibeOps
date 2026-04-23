@@ -1,4 +1,7 @@
 # VibeOps
+
+[![CI](https://github.com/its-the-vibe/VibeOps/actions/workflows/ci.yaml/badge.svg)](https://github.com/its-the-vibe/VibeOps/actions/workflows/ci.yaml)
+
 Templating and configuration
 
 ## Overview
