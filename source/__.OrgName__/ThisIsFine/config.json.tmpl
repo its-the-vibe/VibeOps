@@ -1,5 +1,5 @@
 {
-  "port": {{.ThisIsFinePort}},
+  "port": {{ or .ThisIsFinePort "0" }},
   "dockerServices": [
   {{- $first := true }}
   {{- range $i, $p := .Projects }}
