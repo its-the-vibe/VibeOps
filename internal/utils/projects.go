@@ -10,9 +10,10 @@ import (
 
 // VibeIndex represents optional metadata for a project used in templating and automation
 type VibeIndex struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	PortKey     string `json:"portKey"` // key to look up the port in ports.json
+	Name                          string `json:"name"`
+	Description                   string `json:"description"`
+	PortKey                       string `json:"portKey"` // key to look up the port in ports.json
+	ExcludeFromGithubRepositories bool   `json:"excludeFromGithubRepositories"`
 }
 
 // Project represents a project entry in projects.json
