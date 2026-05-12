@@ -1,0 +1,22 @@
+{
+  "redis": {
+    "addr": "{{.RedisHost}}:6379",
+    "username": "",
+    "password": "",
+    "db": 0
+  },
+  "queues": {
+    "taskQueue": "oddjob:tasks",
+    "poppitQueue": "{{.PoppitBuilderListName}}"
+  },
+  "poppit": {
+    "repo": "its-the-vibe/OddJob",
+    "branch": "refs/heads/main",
+    "dir": "{{.BaseDir}}/{{.OrgName}}/OddJob",
+    "type": "odd:job",
+    "outputChannel": "{{.PoppitCommandOutputChannel}}"
+  },
+  "poll": {
+    "intervalSeconds": 1
+  }
+}
