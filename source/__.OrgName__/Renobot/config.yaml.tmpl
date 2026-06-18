@@ -12,6 +12,8 @@ cron: "0 7 * * *"
 # Path to the revamp binary (defaults to "revamp" on PATH).
 revamp_path: revamp
 
+orderly_queue: "orderlyq:pr-queue"
+
 redis:
   # Address of the Redis instance used by SlackLiner.
   addr: "{{.RedisHost}}:6379"
