@@ -1,0 +1,21 @@
+redis:
+  addr: "{{.RedisHost}}:6379"
+  db: 0
+
+keys:
+  lock: "orderlyq:current-task"
+  pr_list: "orderlyq:pr-queue"
+  poppit_list: "{{.PoppitListName}}"
+  merge_commit_sha: "orderlyq:merge_commit_sha"
+
+channels:
+  github_events: "github-webhook-push"
+  cicd_events: "poppit:builder-execution-events"
+
+timeouts:
+  lock_sleep: "10s"
+  lock_expiry: "30m"
+  cicd_delay: "5m"
+
+poppit:
+  dir: "{{.BaseDir}}/OrderlyQueue"
