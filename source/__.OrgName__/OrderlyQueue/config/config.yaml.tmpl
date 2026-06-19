@@ -2,6 +2,9 @@ redis:
   addr: "{{.RedisHost}}:6379"
   db: 0
 
+admin:
+  port: {{.OrderlyQueuePort}}
+
 keys:
   lock: "orderlyq:current-task"
   pr_list: "orderlyq:pr-queue"
