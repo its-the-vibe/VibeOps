@@ -9,7 +9,7 @@ import (
 func TestLoadProjects_Valid(t *testing.T) {
 	dir := t.TempDir()
 	file := filepath.Join(dir, "projects.json")
-	data := `[{"name":"ProjectA","allowVibeDeploy":true,"isDockerProject":true,"useWithSlackCompose":true,"useWithGitHubIssue":true}]`
+	data := `[{"name":"ProjectA","allowVibeDeploy":true,"isDockerProject":true,"useWithSlackCompose":true,"useWithGitHubIssue":true,"isUpDownProject":true,"isGitHubActionsManaged":true}]`
 	if err := os.WriteFile(file, []byte(data), 0644); err != nil {
 		t.Fatal(err)
 	}
@@ -23,6 +23,9 @@ func TestLoadProjects_Valid(t *testing.T) {
 	}
 	if projects[0].Name != "ProjectA" {
 		t.Errorf("expected name='ProjectA', got %v", projects[0].Name)
+	}
+	if !projects[0].AllowVibeDeploy || !projects[0].IsDockerProject || !projects[0].UseWithSlackCompose || !projects[0].UseWithGitHubIssue || !projects[0].IsUpDownProject || !projects[0].IsGitHubActionsManaged {
+		t.Errorf("expected all boolean fields to be true, got %+v", projects[0])
 	}
 }
 

@@ -18,17 +18,18 @@ type VibeIndex struct {
 
 // Project represents a project entry in projects.json
 type Project struct {
-	Name                string     `json:"name"`
-	AllowVibeDeploy     bool       `json:"allowVibeDeploy"`
-	IsDockerProject     bool       `json:"isDockerProject"`
-	BuildCommands       []string   `json:"buildCommands,omitempty"`
-	UpCommands          []string   `json:"upCommands,omitempty"`
-	DownCommands        []string   `json:"downCommands,omitempty"`
-	RestartCommands     []string   `json:"restartCommands,omitempty"`
-	UseWithSlackCompose bool       `json:"useWithSlackCompose"`
-	UseWithGitHubIssue  bool       `json:"useWithGitHubIssue"`
-	IsUpDownProject     bool       `json:"isUpDownProject"`
-	VibeIndex           *VibeIndex `json:"vibeIndex,omitempty"`
+	Name                   string     `json:"name"`
+	AllowVibeDeploy        bool       `json:"allowVibeDeploy"`
+	IsDockerProject        bool       `json:"isDockerProject"`
+	BuildCommands          []string   `json:"buildCommands,omitempty"`
+	UpCommands             []string   `json:"upCommands,omitempty"`
+	DownCommands           []string   `json:"downCommands,omitempty"`
+	RestartCommands        []string   `json:"restartCommands,omitempty"`
+	UseWithSlackCompose    bool       `json:"useWithSlackCompose"`
+	UseWithGitHubIssue     bool       `json:"useWithGitHubIssue"`
+	IsUpDownProject        bool       `json:"isUpDownProject"`
+	VibeIndex              *VibeIndex `json:"vibeIndex,omitempty"`
+	IsGitHubActionsManaged bool       `json:"isGitHubActionsManaged"`
 }
 
 // LoadProjects reads and parses the projects.json file, setting defaults

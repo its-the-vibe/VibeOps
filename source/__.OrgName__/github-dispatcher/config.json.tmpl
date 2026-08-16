@@ -11,11 +11,16 @@
       {{- if gt $j 0 }},{{ end }}
       "{{ $cmd }}" {{- end }}
       {{- else if $p.isDockerProject }}
+      {{- if $p.isGitHubActionsManaged }}
+      "git checkout main",
+      "git pull"
+      {{- else }}
       "git checkout main",
       "git pull",
       "docker compose build",
       "docker compose down",
       "docker compose up -d"
+      {{- end }}
       {{- end }}
     ]
   }
