@@ -4,7 +4,7 @@
 
 # Redis — connection to the external Redis server
 redis:
-  addr: host.docker.internal:6379
+  addr: "{{.RedisHost}}:6379"
 
 # Redis pub/sub channels the service subscribes to
 channels:

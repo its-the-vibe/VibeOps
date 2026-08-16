@@ -3,7 +3,7 @@ server:
   port: 8080
 
 redis:
-  host: "host.docker.internal"
+  host: "{{.RedisHost}}"
   port: 6379
   db: 0
   channel: "event:horizon"

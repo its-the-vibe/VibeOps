@@ -2,7 +2,7 @@
 # Copy to config.yaml and adjust for your environment.
 
 # Redis address (host:port)
-redis_addr: "host.docker.internal:6379"
+redis_addr: "{{.RedisHost}}:6379"
 
 # Redis Pub/Sub channel that Poppit publishes execution events to.
 # Corresponds to POPPIT_SERVICE_EXECUTION_EVENTS_CHANNEL in Poppit.
