@@ -95,12 +95,13 @@ func AddProjectToProjectsFile(filePath, projectName string) error {
 	}
 
 	newProject := Project{
-		Name:                projectName,
-		AllowVibeDeploy:     true,
-		IsDockerProject:     true,
-		UseWithSlackCompose: true,
-		UseWithGitHubIssue:  true,
-		IsUpDownProject:     true,
+		Name:                   projectName,
+		AllowVibeDeploy:        true,
+		IsDockerProject:        true,
+		UseWithSlackCompose:    true,
+		UseWithGitHubIssue:     true,
+		IsUpDownProject:        true,
+		IsGitHubActionsManaged: true,
 	}
 	projects = append(projects, newProject)
 
