@@ -1,3 +1,7 @@
+server:
+  # HTTP address to bind the web front-end to
+  addr: ":8080"
+
 redis:
   host: "{{.RedisHost}}"
   port: 6379
@@ -5,3 +9,16 @@ redis:
 
 # How often (in seconds) to ping the Redis server
 ping_interval_seconds: 60
+
+poppit:
+  # Notification fields consumed by Poppit
+  repo: "its-the-vibe/QueryLab"
+  branch: "refs/heads/main"
+  type: "querylab-web"
+  dir: "{{.BaseDir}}/vibebox/goquery"
+  source: "querylab"
+
+  # Poppit channels/list names (match Poppit defaults)
+  notification_list: "{{.PoppitListName}}"
+  command_output_channel: "{{.PoppitCommandOutputChannel}}"
+  command_timeout_seconds: 30
