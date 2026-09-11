@@ -24,7 +24,7 @@ schema:
   # Trusted web origins allowed to call POST /schema (must include scheme and host)
   allowed_origins:
     - "http://localhost:8080"
-    - "http://{{.Host}}:{{.QueryLabPort}}"
+    - "http://{{.Hostname}}:{{.QueryLabPort}}"
   # Allowlist of dataset/table pairs for ./goquery --json schema <dataset> <table>
   allowed_tables:
     - dataset: "banking"
