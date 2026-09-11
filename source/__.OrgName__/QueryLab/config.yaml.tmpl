@@ -7,9 +7,6 @@ redis:
   port: 6379
   # password is loaded from the REDIS_PASSWORD environment variable (see .env)
 
-# How often (in seconds) to ping the Redis server
-ping_interval_seconds: 60
-
 poppit:
   # Notification fields consumed by Poppit
   repo: "its-the-vibe/QueryLab"
@@ -22,3 +19,23 @@ poppit:
   notification_list: "{{.PoppitListName}}"
   command_output_channel: "{{.PoppitCommandOutputChannel}}"
   command_timeout_seconds: 30
+
+schema:
+  # Trusted web origins allowed to call POST /schema (must include scheme and host)
+  allowed_origins:
+    - "http://localhost:8080"
+    - "http://{{.Host}}:{{.QueryLabPort}}"
+  # Allowlist of dataset/table pairs for ./goquery --json schema <dataset> <table>
+  allowed_tables:
+    - dataset: "banking"
+      table: "amex"
+    - dataset: "banking"
+      table: "monzo"
+    - dataset: "banking"
+      table: "monzo-flex"
+    - dataset: "banking"
+      table: "santander"
+    - dataset: "banking"
+      table: "starling"
+    - dataset: "banking"
+      table: "sumup"
