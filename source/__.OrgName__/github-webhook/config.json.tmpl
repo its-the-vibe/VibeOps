@@ -18,5 +18,13 @@
   {
     "github-event-type": "image_pushed",
     "channel": "{{.GithubWebhookImagePushedChannel}}"
+  },
+  {
+    "github-event-type": "workflow_run",
+    "channel": "{{.GithubWebhookWorkflowRunChannel}}"
+  },
+  {
+    "github-event-type": "workflow_job",
+    "channel": "{{.GithubWebhookWorkflowJobChannel}}"
   }
 ]
