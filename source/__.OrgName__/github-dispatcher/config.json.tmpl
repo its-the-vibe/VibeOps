@@ -12,6 +12,7 @@
       "{{ $cmd }}" {{- end }}
       {{- else if $p.isDockerProject }}
       {{- if $p.isGitHubActionsManaged }}
+      "{{$.BaseDir}}/{{$.OrgName}}/vibebox/docker-override/docker-override delete",
       "git checkout main",
       "git pull"
       {{- else }}
