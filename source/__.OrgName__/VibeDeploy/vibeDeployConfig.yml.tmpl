@@ -1,0 +1,21 @@
+# Configuration file for allowed repositories
+# Only repositories listed here will be deployed when a rocket emoji reaction is detected
+# If this file is not present or ALLOWED_REPOS_CONFIG is not set, all repositories are allowed by default
+
+allowedRepos:
+{{- range .Projects }}
+  {{- if .allowVibeDeploy }}
+  - {{ $.OrgName }}/{{ .name }}
+  {{- end }}
+{{- end }}
+  # Add more repositories here as needed
+  # Format: owner/repository-name
+
+legacyDockerApps:
+{{- range .Projects }}
+  {{- if and .allowVibeDeploy (not .isGitHubActionsManaged) }}
+  - {{ $.OrgName }}/{{ .name }}
+  {{- end }}
+{{- end }}
+
+dockerOverride: "{{.BaseDir}}/{{.OrgName}}/vibebox/docker-override/docker-override"
