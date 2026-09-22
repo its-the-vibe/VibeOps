@@ -10,3 +10,10 @@ allowed_repos:
 {{- end }}
   # Add more repositories here as needed
   # Format: owner/repository-name
+
+legacyDockerApps:
+{{- range .Projects }}
+  {{- if and .allowVibeDeploy (not .isGitHubActionsManaged) }}
+  - {{ $.OrgName }}/{{ .name }}
+  {{- end }}
+{{- end }}
