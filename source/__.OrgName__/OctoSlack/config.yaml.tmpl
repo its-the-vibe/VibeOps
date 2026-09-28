@@ -17,6 +17,10 @@ slack:
 poppit:
   channel: poppit:command-output
 
+# Workflow Jobs Configuration
+workflow_jobs:
+  channel: "{{.GithubWebhookWorkflowJobChannel}}"
+
 # TimeBomb Configuration (for scheduled message deletion)
 timebomb:
   channel: timebomb-messages
