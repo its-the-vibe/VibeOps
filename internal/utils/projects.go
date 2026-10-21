@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -111,13 +112,16 @@ func AddProjectToProjectsFile(filePath, projectName string) error {
 	})
 
 	// Marshal back to JSON with proper formatting
-	output, err := json.MarshalIndent(projects, "", "  ")
-	if err != nil {
+	var buf bytes.Buffer
+	encoder := json.NewEncoder(&buf)
+	encoder.SetEscapeHTML(false)
+	encoder.SetIndent("", "  ")
+	if err := encoder.Encode(projects); err != nil {
 		return fmt.Errorf("failed to marshal JSON for '%s': %w", filePath, err)
 	}
 
-	// Write back to file
-	if err := os.WriteFile(filePath, append(output, '\n'), 0644); err != nil {
+	// Write back to file (Encode already appends a trailing newline)
+	if err := os.WriteFile(filePath, buf.Bytes(), 0644); err != nil {
 		return fmt.Errorf("failed to write file '%s': %w", filePath, err)
 	}
 
