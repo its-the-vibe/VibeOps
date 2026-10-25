@@ -9,13 +9,13 @@ redis:
 # Slack Configuration
 slack:
   channel_id: {{.OctoSlackChannelID}}
-  redis_list: slack_messages
-  reactions_list: slack_reactions
+  redis_list: {{.SlackLinerList}}
+  reactions_list: {{.SlackReactionsList}}
   search_limit: 100
 
 # Poppit Configuration
 poppit:
-  channel: poppit:command-output
+  channel: {{.PoppitCommandOutputChannel}}
 
 # Workflow Jobs Configuration
 workflow_jobs:

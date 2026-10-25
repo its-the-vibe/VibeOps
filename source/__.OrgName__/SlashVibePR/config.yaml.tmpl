@@ -11,12 +11,12 @@ channels:
   slash_commands: slack-commands
   view_submissions: slack-relay-view-submission
   block_actions: slack-relay-block-actions
-  poppit_output: poppit:command-output
+  poppit_output: {{.PoppitCommandOutputChannel}}
 
 # Redis lists the service publishes to
 lists:
   poppit_commands: {{.PoppitListName}}
-  slackliner_messages: slack_messages
+  slackliner_messages: {{.SlackLinerList}}
 
 # Slack
 slack:
