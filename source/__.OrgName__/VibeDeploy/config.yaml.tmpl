@@ -5,6 +5,10 @@ redis:
   output_channel: {{.PoppitCommandOutputChannel}}
   reaction_list: {{.SlackReactionsList}}
 
+workflow_run:
+  enabled: true
+  channel: {{.GithubWebhookWorkflowRunChannel}}
+
 base_dir: {{.BaseDir}}
 log_level: INFO
 
