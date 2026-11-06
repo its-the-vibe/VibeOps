@@ -3,7 +3,7 @@ module github.com/its-the-vibe/VibeOps
 go 1.27.3
 
 require (
-	cloud.google.com/go/secretmanager v1.23.1
+	cloud.google.com/go/secretmanager v1.24.0
 	github.com/spf13/cobra v1.10.2
 	gopkg.in/yaml.v3 v3.0.1
 )
